@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Filip" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="浏览器URL中查询字符串中的参数；获取设置cookie；时间格式化；获取元素离页面顶部距离；页面的滚动条是否到达底部；回到顶部；常用正则；取文档内容实际高度">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用一些方法">
+<meta property="og:url" content="http://link01.top/2018/08/14/常用一些方法/index.html">
+<meta property="og:site_name" content="Filip">
+<meta property="og:description" content="浏览器URL中查询字符串中的参数；获取设置cookie；时间格式化；获取元素离页面顶部距离；页面的滚动条是否到达底部；回到顶部；常用正则；取文档内容实际高度">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-14T08:25:29.812Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="常用一些方法">
+<meta name="twitter:description" content="浏览器URL中查询字符串中的参数；获取设置cookie；时间格式化；获取元素离页面顶部距离；页面的滚动条是否到达底部；回到顶部；常用正则；取文档内容实际高度">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'HYECV8YAZW',
+      apiKey: 'dcbb0d959673c6070bc986b8eff28bd0',
+      indexName: 'kition',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://link01.top/2018/08/14/常用一些方法/"/>
+
+
+
+
+
+  <title>常用一些方法 | Filip</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Filip</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://link01.top/2018/08/14/常用一些方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="link">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Filip">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">常用一些方法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-14T16:25:29+08:00">
+                2018-08-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/默认分类/" itemprop="url" rel="index">
+                    <span itemprop="name">默认分类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  浏览器URL中查询字符串中的参数；获取设置cookie；时间格式化；获取元素离页面顶部距离；页面的滚动条是否到达底部；回到顶部；常用正则；取文档内容实际高度
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//浏览器URL中查询字符串中的参数</span></span><br><span class="line"><span class="comment">//http://www.runoob.com/jquery/misc-trim.html?channelid=12333&amp;name=xiaoming&amp;age=23</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showWindowHref</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sHref = <span class="built_in">window</span>.location.href;</span><br><span class="line">    <span class="keyword">var</span> args = sHref.split(<span class="string">'?'</span>);</span><br><span class="line">    <span class="keyword">if</span>(args[<span class="number">0</span>] == sHref)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> arr = args[<span class="number">1</span>].split(<span class="string">'&amp;'</span>);</span><br><span class="line">    <span class="keyword">var</span> obj = &#123;&#125;;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i&lt; arr.length;i++)&#123;</span><br><span class="line">        <span class="keyword">var</span> arg = arr[i].split(<span class="string">'='</span>);</span><br><span class="line">        obj[arg[<span class="number">0</span>]] = arg[<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> href = showWindowHref(); <span class="comment">// obj</span></span><br><span class="line"><span class="built_in">console</span>.log(href[<span class="string">'name'</span>]); <span class="comment">// xiaoming</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//时间处理</span></span><br><span class="line">    FormatDateTime:<span class="function"><span class="keyword">function</span>(<span class="params">strTime</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(strTime)&#123;</span><br><span class="line">            <span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>(strTime),</span><br><span class="line">                Y = date.getFullYear(),</span><br><span class="line">                m = date.getMonth() + <span class="number">1</span>,</span><br><span class="line">                d = date.getDate(),</span><br><span class="line">                H = date.getHours(),</span><br><span class="line">                i = date.getMinutes(),</span><br><span class="line">                s = date.getSeconds();</span><br><span class="line">            <span class="keyword">if</span> (m &lt; <span class="number">10</span>) &#123;</span><br><span class="line">                m = <span class="string">'0'</span> + m;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (d &lt; <span class="number">10</span>) &#123;</span><br><span class="line">                d = <span class="string">'0'</span> + d;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (H &lt; <span class="number">10</span>) &#123;</span><br><span class="line">                H = <span class="string">'0'</span> + H;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; <span class="number">10</span>) &#123;</span><br><span class="line">                i = <span class="string">'0'</span> + i;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (s &lt; <span class="number">10</span>) &#123;</span><br><span class="line">                s = <span class="string">'0'</span> + s;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//  &lt;!-- 获取时间格式 2017-01-03 10:13:48 --&gt;</span></span><br><span class="line">            <span class="comment">//  var t = Y+'-'+m+'-'+d+' '+H+':'+i+':'+s;</span></span><br><span class="line">            <span class="keyword">var</span> t = Y+<span class="string">'-'</span>+m+<span class="string">'-'</span>+d;</span><br><span class="line">            <span class="comment">//  &lt;!-- 获取时间格式 2017-01-03 --&gt;</span></span><br><span class="line">            <span class="comment">//  var t = Y + '-' + m + '-' + d;</span></span><br><span class="line">            <span class="keyword">return</span> t;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">quickerFunction</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.setCookie=<span class="function"><span class="keyword">function</span>(<span class="params">objName,objValue,path,objHours</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> str = objName + <span class="string">"="</span> + <span class="built_in">encodeURI</span> (objValue);</span><br><span class="line">        <span class="keyword">if</span>(objHours &gt; <span class="number">0</span>)&#123;<span class="comment">//为时不设定过期时间，浏览器关闭时cookie自动消失</span></span><br><span class="line">            <span class="keyword">var</span> date = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">            <span class="keyword">var</span> ms = objHours*<span class="number">3600</span>*<span class="number">1000</span>;</span><br><span class="line">            date.setTime(date.getTime() + ms);</span><br><span class="line">            str += (<span class="string">";expires="</span> + date.toGMTString());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(path)&#123;</span><br><span class="line">            str+=((path) ? (<span class="string">";path="</span> + path) : <span class="string">""</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">document</span>.cookie = str;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.getCookie=<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> arr = <span class="built_in">document</span>.cookie.match(<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"(^| )"</span>+name+<span class="string">"=([^;]*)(;|$)"</span>));</span><br><span class="line">        <span class="keyword">if</span>(arr != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">decodeURI</span>(arr[<span class="number">2</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.delCookie=<span class="function"><span class="keyword">function</span>(<span class="params">name,path</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> exp = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">        exp.setTime(exp.getTime() - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">var</span> cval=<span class="keyword">this</span>.getCookie(name);</span><br><span class="line">        <span class="keyword">if</span>(cval!=<span class="literal">null</span>)&#123;</span><br><span class="line">            <span class="keyword">var</span> str = name + <span class="string">"="</span>+<span class="string">'aaa'</span>+<span class="string">";expires="</span>+exp.toGMTString();</span><br><span class="line">            <span class="keyword">if</span>(path)&#123;</span><br><span class="line">                str+=((path) ? (<span class="string">";path="</span> + path) : <span class="string">""</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                str+=<span class="string">";path=/"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="built_in">document</span>.cookie= str;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.placeholder=<span class="function"><span class="keyword">function</span>(<span class="params">nodes,pcolor</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!(<span class="string">"placeholder"</span> <span class="keyword">in</span> <span class="built_in">document</span>.createElement(<span class="string">"input"</span>)))&#123;</span><br><span class="line">            <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;nodes.length;i++) &#123;</span><br><span class="line">                <span class="keyword">var</span> self = nodes[i],</span><br><span class="line">                    placeholder = self.getAttribute(<span class="string">'placeholder'</span>) || <span class="string">''</span>;</span><br><span class="line">                self.onfocus = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">this</span>.value == <span class="keyword">this</span>.getAttribute(<span class="string">'placeholder'</span>)) &#123;</span><br><span class="line">                        <span class="keyword">this</span>.value = <span class="string">''</span>;</span><br><span class="line">                        <span class="keyword">this</span>.style.color = <span class="string">""</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">                self.onblur = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">this</span>.value == <span class="string">''</span>) &#123;</span><br><span class="line">                        <span class="keyword">this</span>.value = <span class="keyword">this</span>.getAttribute(<span class="string">'placeholder'</span>);</span><br><span class="line">                        <span class="keyword">this</span>.style.color = pcolor;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;;</span><br><span class="line">                self.value = placeholder;</span><br><span class="line">                self.style.color = pcolor;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.dateStringToLongTime=<span class="function"><span class="keyword">function</span>(<span class="params">datestr,type</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> arr,year,month,dt,hour,minute,s,longTime,date;</span><br><span class="line">        <span class="keyword">if</span>(type!==<span class="string">" "</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            arr=datestr.split(<span class="string">" "</span>)[<span class="number">0</span>].split(type);</span><br><span class="line">            year=arr[<span class="number">0</span>],month=arr[<span class="number">1</span>],dt=arr[<span class="number">2</span>];</span><br><span class="line">            hour=datestr.split(<span class="string">" "</span>)[<span class="number">1</span>].split(<span class="string">':'</span>)[<span class="number">0</span>];</span><br><span class="line">            minute=datestr.split(<span class="string">" "</span>)[<span class="number">1</span>].split(<span class="string">':'</span>)[<span class="number">1</span>];</span><br><span class="line">            s=datestr.split(<span class="string">" "</span>)[<span class="number">1</span>].split(<span class="string">':'</span>)[<span class="number">2</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        date=<span class="keyword">new</span> <span class="built_in">Date</span>(year,<span class="built_in">parseInt</span>(month)<span class="number">-1</span>,dt,hour,minute,s);</span><br><span class="line">        longTime=date.getTime();</span><br><span class="line">        <span class="keyword">return</span> longTime;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.longTimeToDateString=<span class="function"><span class="keyword">function</span>(<span class="params">longtime,type</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> date=<span class="keyword">new</span> <span class="built_in">Date</span>(longtime),m=(date.getMonth()+<span class="number">1</span>)&lt;<span class="number">10</span>?<span class="string">"0"</span>+(date.getMonth()+<span class="number">1</span>):(date.getMonth()+<span class="number">1</span>),</span><br><span class="line">            d=date.getDate()&lt;<span class="number">10</span>?<span class="string">"0"</span>+date.getDate():date.getDate(),h=date.getHours()&lt;<span class="number">10</span>?<span class="string">"0"</span>+date.getHours():date.getHours(),</span><br><span class="line">            min=date.getMinutes()&lt;<span class="number">10</span>?<span class="string">"0"</span>+date.getMinutes():date.getMinutes(),</span><br><span class="line">            s=date.getSeconds()&lt;<span class="number">10</span>?<span class="string">"0"</span>+date.getSeconds():date.getSeconds();</span><br><span class="line">        <span class="keyword">var</span> str=date.getFullYear()+type+m+type+d+<span class="string">" "</span>+h+<span class="string">":"</span>+min+<span class="string">":"</span>+s;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.dateToString=<span class="function"><span class="keyword">function</span> (<span class="params">date,type</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> m=(date.getMonth()+<span class="number">1</span>)&lt;<span class="number">10</span>?<span class="string">"0"</span>+(date.getMonth()+<span class="number">1</span>):(date.getMonth()+<span class="number">1</span>),</span><br><span class="line">            d=date.getDate()&lt;<span class="number">10</span>?<span class="string">"0"</span>+date.getDate():date.getDate(),h=date.getHours()&lt;<span class="number">10</span>?<span class="string">"0"</span>+date.getHours():date.getHours(),</span><br><span class="line">            min=date.getMinutes()&lt;<span class="number">10</span>?<span class="string">"0"</span>+date.getMinutes():date.getMinutes(),</span><br><span class="line">            s=date.getSeconds()&lt;<span class="number">10</span>?<span class="string">"0"</span>+date.getSeconds():date.getSeconds();</span><br><span class="line">        <span class="keyword">var</span> str=date.getFullYear()+type+m+type+d+<span class="string">" "</span>+h+<span class="string">":"</span>+min+<span class="string">":"</span>+s;</span><br><span class="line">        <span class="keyword">return</span> str;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.returnTop=<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">document</span>.documentElement.scrollTop=<span class="number">0</span>;</span><br><span class="line">        <span class="built_in">document</span>.body.scrollTop=<span class="number">0</span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.validate=<span class="function"><span class="keyword">function</span> (<span class="params">v,type</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// type:1.空值,2.手机,3.email,4.数字,5,校验密码:数字、字母、下划线6-12位</span></span><br><span class="line">        <span class="keyword">var</span> reg;</span><br><span class="line">        <span class="keyword">switch</span> (type)&#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">if</span>(!v)</span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                reg=<span class="regexp">/^1[34578]\d&#123;9&#125;$/</span>;</span><br><span class="line">                <span class="keyword">return</span> reg.test(v);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                reg=<span class="regexp">/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/</span>;</span><br><span class="line">                <span class="keyword">return</span> reg.test(v);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">                reg=<span class="regexp">/^[0-9]$/</span>;</span><br><span class="line">                <span class="keyword">return</span> reg.test(v);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">                reg=<span class="regexp">/^[\w*\_*]&#123;6,12&#125;$/</span>;</span><br><span class="line">                <span class="keyword">return</span> reg.test(v);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.getParam=<span class="function"><span class="keyword">function</span>(<span class="params">p</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> url=<span class="built_in">window</span>.location.href,search=<span class="built_in">window</span>.location.search,</span><br><span class="line">            paramsArr=search.replace(<span class="string">"?"</span>,<span class="string">''</span>).split(<span class="string">'&amp;'</span>),params=&#123;&#125;,result;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;paramsArr.length;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(paramsArr[i].indexOf(p)===<span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                result=paramsArr[i].split(<span class="string">'='</span>)[<span class="number">1</span>];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.windowClientSize=<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> e = <span class="built_in">window</span>,</span><br><span class="line">            a = <span class="string">'inner'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!(<span class="string">'innerWidth'</span> <span class="keyword">in</span> <span class="built_in">window</span> ))&#123;</span><br><span class="line">            a = <span class="string">'client'</span>;</span><br><span class="line">            e = <span class="built_in">document</span>.documentElement || <span class="built_in">document</span>.body;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> &#123; <span class="attr">width</span> : e[ a+<span class="string">'Width'</span> ] , <span class="attr">height</span> : e[ a+<span class="string">'Height'</span> ] &#125;;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//以下方法都兼容ie</span></span><br><span class="line">    <span class="comment">//页面的滚动条是否到达底部</span></span><br><span class="line">    <span class="keyword">this</span>.isBottom=<span class="function"><span class="keyword">function</span> (<span class="params">offset</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//页面高度=滚动条高度+可视区域高度</span></span><br><span class="line">        <span class="keyword">var</span> clientHeight=<span class="keyword">this</span>.getClientHeight(),scrollTop=<span class="keyword">this</span>.getScrollTop(),</span><br><span class="line">            pageHeight=<span class="keyword">this</span>.getScrollHeight();</span><br><span class="line">        <span class="keyword">if</span>(pageHeight+offset&lt;=clientHeight+scrollTop)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">//某个元素的滚动条是否到达底部</span></span><br><span class="line">    <span class="keyword">this</span>.isBottomForElement=<span class="function"><span class="keyword">function</span> (<span class="params">offset,element</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//容器页面高度=容器滚动条高度+容器可视区域高度</span></span><br><span class="line">        <span class="keyword">var</span> clientHeight=element.offsetHeight,scrollTop=element.scrollTop,</span><br><span class="line">            pageHeight=element.scrollHeight;</span><br><span class="line">        <span class="keyword">if</span>(pageHeight+offset&lt;=clientHeight+scrollTop)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">//某个元素是否到达底部</span></span><br><span class="line">    <span class="keyword">this</span>.isMoveToPos=<span class="function"><span class="keyword">function</span> (<span class="params">element,offset,type,leaveStop</span>) </span>&#123;</span><br><span class="line">        <span class="comment">//元素高度=滚动条高度+可视区域高度</span></span><br><span class="line">        <span class="keyword">var</span> clientHeight=<span class="keyword">this</span>.getClientHeight(),scrollTop=<span class="keyword">this</span>.getScrollTop(),elementHeight;</span><br><span class="line">        <span class="keyword">if</span>(type==<span class="string">'top'</span>) elementHeight=<span class="keyword">this</span>.offsetTop(element);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(type==<span class="string">"bottom"</span>) elementHeight=<span class="keyword">this</span>.offsetTop(element)+element.offsetHeight;</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">console</span>.error(<span class="string">"isMoveToPos type is 'top' or 'bottom'"</span>);</span><br><span class="line">        <span class="keyword">if</span>(elementHeight+offset&lt;=clientHeight+scrollTop)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.getScrollTop=<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> scrollTop=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">document</span>.documentElement&amp;&amp;<span class="built_in">document</span>.documentElement.scrollTop)</span><br><span class="line">        &#123;</span><br><span class="line">            scrollTop=<span class="built_in">document</span>.documentElement.scrollTop;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">document</span>.body)</span><br><span class="line">        &#123;</span><br><span class="line">            scrollTop=<span class="built_in">document</span>.body.scrollTop;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> scrollTop;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.getClientHeight=<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> clientHeight=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">document</span>.body.clientHeight&amp;&amp;<span class="built_in">document</span>.documentElement.clientHeight)</span><br><span class="line">        &#123;</span><br><span class="line">            clientHeight = (<span class="built_in">document</span>.body.clientHeight&lt;<span class="built_in">document</span>.documentElement.clientHeight)?<span class="built_in">document</span>.body.clientHeight:<span class="built_in">document</span>.documentElement.clientHeight;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            clientHeight = (<span class="built_in">document</span>.body.clientHeight&gt;<span class="built_in">document</span>.documentElement.clientHeight)?<span class="built_in">document</span>.body.clientHeight:<span class="built_in">document</span>.documentElement.clientHeight;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> clientHeight;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">/********************</span></span><br><span class="line"><span class="comment">     * 取文档内容实际高度</span></span><br><span class="line"><span class="comment">     *******************/</span></span><br><span class="line">    <span class="keyword">this</span>.getScrollHeight=<span class="function"><span class="keyword">function</span> (<span class="params"></span>)</span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">Math</span>.max(<span class="built_in">document</span>.body.scrollHeight,<span class="built_in">document</span>.documentElement.scrollHeight);</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     获取元素离页面顶部距离</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">this</span>.offsetTop=<span class="function"><span class="keyword">function</span> (<span class="params"> elements </span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> top = elements.offsetTop;</span><br><span class="line">        <span class="keyword">var</span> parent = elements.offsetParent;</span><br><span class="line">        <span class="keyword">while</span>( parent != <span class="literal">null</span> )&#123;</span><br><span class="line">            top += parent.offsetTop;</span><br><span class="line">            parent = parent.offsetParent;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> top;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">this</span>.offsetLeft=<span class="function"><span class="keyword">function</span>(<span class="params"> elements </span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> left = elements.offsetLeft;</span><br><span class="line">        <span class="keyword">var</span> parent = elements.offsetParent;</span><br><span class="line">        <span class="keyword">while</span>( parent != <span class="literal">null</span> )&#123;</span><br><span class="line">            left += parent.offsetLeft;</span><br><span class="line">            parent = parent.offsetParent;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> parent;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> quicker=<span class="keyword">new</span> quickerFunction();</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/14/圣杯布局/" rel="next" title="圣杯布局">
+                <i class="fa fa-chevron-left"></i> 圣杯布局
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/14/数组根据某项分组/" rel="prev" title="数组根据某项分组">
+                数组根据某项分组 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">link</p>
+              <p class="site-description motion-element" itemprop="description">明天放假可好</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">link</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
