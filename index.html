@@ -302,6 +302,519 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://link01.top/2018/12/04/Rxjs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="link">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Filip">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/04/Rxjs/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-04T11:23:54+08:00">
+                2018-12-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/12/04/Rxjs/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Rxjs浅浅滴学习"><a href="#Rxjs浅浅滴学习" class="headerlink" title="Rxjs浅浅滴学习"></a>Rxjs浅浅滴学习</h1><p>我们都知道 JS 是什么，那么什么是 Rx 呢？Rx 是 Reactive Extension（也叫 ReactiveX）的简称，指的是实践响应式编程的一套工具，<a href="http://reactivex.io/" target="_blank" rel="noopener">Rx 官网</a>首页的介绍是一套通过可监听流来做异步编程的 API（An API for asynchronous programming with observable streams）。</p>
+<p>RxJS 是基于观察者模式和迭代器模式以函数式编程思维来实现的。</p>
+<h3 id="RxJS-的特点"><a href="#RxJS-的特点" class="headerlink" title="RxJS 的特点"></a>RxJS 的特点</h3><ul>
+<li>数据流抽象了很多现实问题</li>
+<li>擅长处理异步问题</li>
+<li>把复杂问题分解为简单问题的组合</li>
+</ul>
+<p>前端中的 DOM 事件、WebSocket 推送消息、AJAX 请求资源、动画都可以看作是数据流。</p>
+<p>RxJS 对数据采用“推”的方式，当一个数据产生时，会将其推送给对应的处理函数，这个处理函数不用关心数据时同步产生还是异步产生的，因此处理异步将会变得非常简单。</p>
+<p>RxJS 中很多操作符，每个操作符都提供了一个小功能，学习 RxJS 最重要的就是学习如何组合操作符来解决复杂问题。</p>
+<p>在 RxJS 中用来解决异步事件管理的的基本概念是：</p>
+<ul>
+<li><strong>Observable (可观察对象):</strong> 表示一个概念，这个概念是一个可调用的未来值或事件的集合。</li>
+<li><strong>Observer (观察者):</strong> 一个回调函数的集合，它知道如何去监听由 Observable 提供的值。</li>
+<li><strong>Subscription (订阅):</strong> 表示 Observable 的执行，主要用于取消 Observable 的执行。</li>
+<li><strong>Operators (操作符):</strong> 采用函数式编程风格的纯函数 (pure function)，使用像 <code>map</code>、<code>filter</code>、<code>concat</code>、<code>flatMap</code> 等这样的操作符来处理集合。</li>
+<li><strong>Subject (主体):</strong> 相当于 EventEmitter，并且是将值或事件多路推送给多个 Observer 的唯一方式。</li>
+<li><strong>Schedulers (调度器):</strong> 用来控制并发并且是中央集权的调度员，允许我们在发生计算时进行协调，例如 <code>setTimeout</code> 或 <code>requestAnimationFrame</code> 或其他。</li>
+</ul>
+<h2 id="Observable-可观察对象"><a href="#Observable-可观察对象" class="headerlink" title="Observable (可观察对象)"></a>Observable (可观察对象)</h2><p>Observables 是多个值的惰性推送集合。它填补了下面表格中的空白：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>单个值</th>
+<th>多个值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>拉取</strong></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Glossary/Function" target="_blank" rel="noopener"><code>Function</code></a></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols" target="_blank" rel="noopener"><code>Iterator</code></a></td>
+</tr>
+<tr>
+<td><strong>推送</strong></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Mozilla/JavaScript_code_modules/Promise.jsm/Promise" target="_blank" rel="noopener"><code>Promise</code></a></td>
+<td><a href="https://cn.rx.js.org/class/es6/Observable.js~Observable.html" target="_blank" rel="noopener"><code>Observable</code></a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例</strong> - 当订阅下面代码中的 Observable 的时候会立即(同步地)推送值<code>1</code>、<code>2</code>、<code>3</code>，然后1秒后会推送值<code>4</code>，再然后是完成流：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observable = Rx.Observable.create(<span class="function"><span class="keyword">function</span> (<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  observer.next(<span class="number">1</span>);</span><br><span class="line">  observer.next(<span class="number">2</span>);</span><br><span class="line">  observer.next(<span class="number">3</span>);</span><br><span class="line">  setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    observer.next(<span class="number">4</span>);</span><br><span class="line">    observer.complete();</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Observables 像是没有参数, 但可以泛化为多个值的函数。</p>
+</blockquote>
+<p>Demo01：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Hello'</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="number">42</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = foo.call(); <span class="comment">// 等同于 foo()</span></span><br><span class="line"><span class="built_in">console</span>.log(x);</span><br><span class="line"><span class="keyword">var</span> y = foo.call(); <span class="comment">// 等同于 foo()</span></span><br><span class="line"><span class="built_in">console</span>.log(y);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">"Hello"</span></span><br><span class="line"><span class="number">42</span></span><br><span class="line"><span class="string">"Hello"</span></span><br><span class="line"><span class="number">42</span></span><br></pre></td></tr></table></figure>
+<p>Observables 重写上面的代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> foo = Rx.Observable.create(<span class="function"><span class="keyword">function</span> (<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Hello'</span>);</span><br><span class="line">  observer.next(<span class="number">42</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">foo.subscribe(<span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(x);</span><br><span class="line">&#125;);</span><br><span class="line">foo.subscribe(<span class="function"><span class="keyword">function</span> (<span class="params">y</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(y);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="string">"Hello"</span></span><br><span class="line"><span class="number">42</span></span><br><span class="line"><span class="string">"Hello"</span></span><br><span class="line"><span class="number">42</span></span><br></pre></td></tr></table></figure>
+<p>这是因为函数和 Observables 都是惰性运算。如果你不调用函数，<code>console.log(&#39;Hello&#39;)</code> 就不会执行。Observables 也是如此，如果你不“调用”它(使用 <code>subscribe</code>)，<code>console.log(&#39;Hello&#39;)</code> 也不会执行。此外，“调用”或“订阅”是独立的操作：两个函数调用会触发两个单独的副作用，两个 Observable 订阅同样也是触发两个单独的副作用。EventEmitters 共享副作用并且无论是否存在订阅者都会尽早执行，Observables 与之相反，不会共享副作用并且是延迟执行。</p>
+<blockquote>
+<p>订阅 Observable 类似于调用函数。</p>
+</blockquote>
+<blockquote>
+<p>Observables 传递值可以是同步的，也可以是异步的。</p>
+</blockquote>
+<h4 id="Observable剖析"><a href="#Observable剖析" class="headerlink" title="Observable剖析"></a>Observable剖析</h4><p>Observables 是使用 <code>Rx.Observable.create</code> 或创建操作符<strong>创建的</strong>，并使用观察者来<strong>订阅</strong>它，然后<strong>执行</strong>它并发送 <code>next</code> / <code>error</code> / <code>complete</code> 通知给观察者，而且执行可能会被<strong>清理</strong>。这四个方面全部编码在 Observables 实例中，但某些方面是与其他类型相关的，像 Observer (观察者) 和 Subscription (订阅)。</p>
+<p>Observable 的核心关注点：</p>
+<ul>
+<li><strong>创建</strong> Observables</li>
+<li><strong>订阅</strong> Observables</li>
+<li><strong>执行</strong> Observables</li>
+<li><strong>清理</strong> Observables</li>
+</ul>
+<h4 id="创建-Observables"><a href="#创建-Observables" class="headerlink" title="创建 Observables"></a>创建 Observables</h4><p><code>Rx.Observable.create</code> 是 <code>Observable</code> 构造函数的别名，它接收一个参数：<code>subscribe</code> 函数。</p>
+<p>下面的示例创建了一个 Observable，它每隔一秒会向观察者发送字符串 <code>&#39;hi&#39;</code> 。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observable = Rx.Observable.create(<span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> id = setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    observer.next(<span class="string">'hi'</span>)</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>Observables 可以使用 <code>create</code> 来创建, 但通常我们使用所谓的<a href="https://cn.rx.js.org/manual/overview.html#creation-operators" target="_blank" rel="noopener">创建操作符</a>, 像 <code>of</code>、<code>from</code>、<code>interval</code>、等等。</p>
+<p> 在上面的示例中，<code>subscribe</code> 函数是用来描述 Observable 最重要的一块。我们来看下订阅是什么意思。</p>
+<h4 id="订阅-Observables"><a href="#订阅-Observables" class="headerlink" title="订阅 Observables"></a>订阅 Observables</h4><p>示例中的 Observable 对象 <code>observable</code> 可以<strong>订阅</strong>，像这样：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">observable.subscribe(<span class="function"><span class="params">x</span> =&gt;</span> <span class="built_in">console</span>.log(x));</span><br></pre></td></tr></table></figure>
+<p><code>observable.subscribe</code> 和 <code>Observable.create(function subscribe(observer) {...})</code> 中的 <code>subscribe</code> 有着同样的名字，这并不是一个巧合。在库中，它们是不同的，但从实际出发，可以认为在概念上它们是等同的。</p>
+<blockquote>
+<p>订阅 Observable 像是调用函数, 并提供接收数据的回调函数。</p>
+</blockquote>
+<p><code>subscribe</code> 调用是启动 “Observable 执行”的一种简单方式， 并将值或事件传递给本次执行的观察者。</p>
+<h4 id="执行-Observables"><a href="#执行-Observables" class="headerlink" title="执行 Observables"></a>执行 Observables</h4><p><code>Observable.create(function subscribe(observer) {...})</code> 中<code>...</code>的代码表示 “Observable 执行”，它是惰性运算，只有在每个观察者订阅后才会执行。随着时间的推移，执行会以同步或异步的方式产生多个值。</p>
+<p>Observable 执行可以传递三种类型的值：</p>
+<ul>
+<li>“Next” 通知： 发送一个值，比如数字、字符串、对象，等等。</li>
+<li>“Error” 通知： 发送一个 JavaScript 错误 或 异常。</li>
+<li>“Complete” 通知： 不再发送任何值。</li>
+</ul>
+<p>“Next” 通知是最重要，也是最常见的类型：它们表示传递给观察者的实际数据。”Error” 和 “Complete” 通知可能只会在 Observable 执行期间发生一次，并且只会执行其中的一个。</p>
+<blockquote>
+<p>在 Observable 执行中, 可能会发送零个到无穷多个 “Next” 通知。如果发送的是 “Error” 或 “Complete” 通知的话，那么之后不会再发送任何通知了。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observable = Rx.Observable.create(<span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  observer.next(<span class="number">1</span>);</span><br><span class="line">  observer.next(<span class="number">2</span>);</span><br><span class="line">  observer.next(<span class="number">3</span>);</span><br><span class="line">  observer.complete();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observable = Rx.Observable.create(<span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  observer.next(<span class="number">1</span>);</span><br><span class="line">  observer.next(<span class="number">2</span>);</span><br><span class="line">  observer.next(<span class="number">3</span>);</span><br><span class="line">  observer.complete();</span><br><span class="line">  observer.next(<span class="number">4</span>); <span class="comment">// 因为违反规约，所以不会发送</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observable = Rx.Observable.create(<span class="function"><span class="keyword">function</span> <span class="title">subscribe</span>(<span class="params">observer</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    observer.next(<span class="number">1</span>);</span><br><span class="line">    observer.next(<span class="number">2</span>);</span><br><span class="line">    observer.next(<span class="number">3</span>);</span><br><span class="line">    observer.complete();</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    observer.error(err); <span class="comment">// 如果捕获到异常会发送一个错误</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h4 id="清理-Observable-执行"><a href="#清理-Observable-执行" class="headerlink" title="清理 Observable 执行"></a>清理 Observable 执行</h4><p>因为 Observable 执行可能会是无限的，并且观察者通常希望能在有限的时间内中止执行，所以我们需要一个 API 来取消执行。因为每个执行都是其对应观察者专属的，一旦观察者完成接收值，它必须要一种方法来停止执行，以避免浪费计算能力或内存资源。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observable = Rx.Observable.from([<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>]);</span><br><span class="line"><span class="keyword">var</span> subscription = observable.subscribe(<span class="function"><span class="params">x</span> =&gt;</span> <span class="built_in">console</span>.log(x));</span><br><span class="line"><span class="comment">// 稍后：</span></span><br><span class="line">subscription.unsubscribe();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>当你订阅了 Observable，你会得到一个 Subscription ，它表示进行中的执行。只要调用 <code>unsubscribe()</code> 方法就可以取消执行。</p>
+</blockquote>
+<h2 id="Observer-观察者"><a href="#Observer-观察者" class="headerlink" title="Observer (观察者)"></a>Observer (观察者)</h2><p><strong>什么是观察者？</strong> - 观察者是由 Observable 发送的值的消费者。观察者只是一组回调函数的集合，每个回调函数对应一种 Observable 发送的通知类型：<code>next</code>、<code>error</code> 和 <code>complete</code> 。下面的示例是一个典型的观察者对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observer = &#123;</span><br><span class="line">  next: <span class="function"><span class="params">x</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'Observer got a next value: '</span> + x),</span><br><span class="line">  error: <span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.error(<span class="string">'Observer got an error: '</span> + err),</span><br><span class="line">  complete: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'Observer got a complete notification'</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>要使用观察者，需要把它提供给 Observable 的 <code>subscribe</code> 方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">observable.subscribe(observer);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>观察者只是有三个回调函数的对象，每个回调函数对应一种 Observable 发送的通知类型。</p>
+</blockquote>
+<h2 id="Subscription（订阅）"><a href="#Subscription（订阅）" class="headerlink" title="Subscription（订阅）"></a>Subscription（订阅）</h2><p><strong>什么是 Subscription ？</strong> - Subscription 是表示可清理资源的对象，通常是 Observable 的执行。Subscription 有一个重要的方法，即 <code>unsubscribe</code>，它不需要任何参数，只是用来清理由 Subscription 占用的资源。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observable = Rx.Observable.interval(<span class="number">1000</span>);</span><br><span class="line"><span class="keyword">var</span> subscription = observable.subscribe(<span class="function"><span class="params">x</span> =&gt;</span> <span class="built_in">console</span>.log(x));</span><br><span class="line"><span class="comment">// 稍后：</span></span><br><span class="line"><span class="comment">// 这会取消正在进行中的 Observable 执行</span></span><br><span class="line"><span class="comment">// Observable 执行是通过使用观察者调用 subscribe 方法启动的</span></span><br><span class="line">subscription.unsubscribe();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Subscription 基本上只有一个 <code>unsubscribe()</code> 函数，这个函数用来释放资源或去取消 Observable 执行。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> observable1 = Rx.Observable.interval(<span class="number">400</span>);</span><br><span class="line"><span class="keyword">var</span> observable2 = Rx.Observable.interval(<span class="number">300</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> subscription = observable1.subscribe(<span class="function"><span class="params">x</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'first: '</span> + x));</span><br><span class="line"><span class="keyword">var</span> childSubscription = observable2.subscribe(<span class="function"><span class="params">x</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'second: '</span> + x));</span><br><span class="line"></span><br><span class="line">subscription.add(childSubscription);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// subscription 和 childSubscription 都会取消订阅</span></span><br><span class="line">  subscription.unsubscribe();</span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">output:</span><br><span class="line">    second: <span class="number">0</span></span><br><span class="line">    first: <span class="number">0</span></span><br><span class="line">    second: <span class="number">1</span></span><br><span class="line">    first: <span class="number">1</span></span><br><span class="line">    second: <span class="number">2</span></span><br></pre></td></tr></table></figure>
+<h4 id="simple-Demo1"><a href="#simple-Demo1" class="headerlink" title="simple Demo1"></a>simple Demo1</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> button = <span class="built_in">document</span>.querySelector(<span class="string">'button'</span>);</span><br><span class="line">button.addEventListener(<span class="string">'click'</span>, () =&gt;</span><br><span class="line">                        <span class="built_in">console</span>.log(<span class="string">'Clicked!'</span>)</span><br><span class="line">                       );</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> button = <span class="built_in">document</span>.querySelector(<span class="string">'button'</span>);</span><br><span class="line">Rx.Observable.fromEvent(button, <span class="string">'click'</span>)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'Clicked!'</span>));</span><br></pre></td></tr></table></figure>
+<p><code>Rx.Observable.fromEvent()</code>相当于创建了一个可观察对象<code>Observable</code>,也就是监听的代理对象,subscribe是这个对象的一个方法,该方法返回这个监听的事件,<code>subscribe</code>方法的参数是对观察对象返回值做出下一步操作(回调函数).</p>
+<h4 id="Demo2（控制流动）"><a href="#Demo2（控制流动）" class="headerlink" title="Demo2（控制流动）"></a>Demo2（控制流动）</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输入 "hello world"</span></span><br><span class="line"><span class="keyword">var</span> input = Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'input'</span>), <span class="string">'input'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 过滤掉小于3个字符长度的目标值</span></span><br><span class="line">input.filter(<span class="function"><span class="params">event</span> =&gt;</span> event.target.value.length &gt; <span class="number">2</span>)</span><br><span class="line">  .map(<span class="function"><span class="params">event</span> =&gt;</span> event.target.value)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "hel"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 延迟事件</span></span><br><span class="line">input.delay(<span class="number">200</span>)</span><br><span class="line">  .map(<span class="function"><span class="params">event</span> =&gt;</span> event.target.value)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "h" -200ms-&gt; "e" -200ms-&gt; "l" ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 每200ms只能通过一个事件</span></span><br><span class="line">input.throttleTime(<span class="number">200</span>)</span><br><span class="line">  .map(<span class="function"><span class="params">event</span> =&gt;</span> event.target.value)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "h" -200ms-&gt; "w"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 停止输入后200ms方能通过最新的那个事件</span></span><br><span class="line">input.debounceTime(<span class="number">200</span>)</span><br><span class="line">  .map(<span class="function"><span class="params">event</span> =&gt;</span> event.target.value)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "o" -200ms-&gt; "d"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在3次事件后停止事件流</span></span><br><span class="line">input.take(<span class="number">3</span>)</span><br><span class="line">  .map(<span class="function"><span class="params">event</span> =&gt;</span> event.target.value)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "hel"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 直到其他 observable 触发事件才停止事件流</span></span><br><span class="line"><span class="keyword">var</span> stopStream = Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'button'</span>), <span class="string">'click'</span>);</span><br><span class="line">input.takeUntil(stopStream)</span><br><span class="line">  .map(<span class="function"><span class="params">event</span> =&gt;</span> event.target.value)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "hello" (点击才能看到)</span></span><br></pre></td></tr></table></figure>
+<h4 id="Demo3（产生值）"><a href="#Demo3（产生值）" class="headerlink" title="Demo3（产生值）"></a>Demo3（产生值）</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输入 "hello world"</span></span><br><span class="line"><span class="keyword">var</span> input = Rx.Observable.fromEvent(<span class="built_in">document</span>.querySelector(<span class="string">'input'</span>), <span class="string">'input'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 传递一个新的值</span></span><br><span class="line">input.map(<span class="function"><span class="params">event</span> =&gt;</span> event.target.value)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "h"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过提取属性传递一个新的值</span></span><br><span class="line">input.pluck(<span class="string">'target'</span>, <span class="string">'value'</span>)</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "h"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 传递之前的两个值</span></span><br><span class="line">input.pluck(<span class="string">'target'</span>, <span class="string">'value'</span>).pairwise()</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// ["h", "he"]</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 只会通过唯一的值</span></span><br><span class="line">input.pluck(<span class="string">'data'</span>).distinct()</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "helo wrd"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不会传递重复的值</span></span><br><span class="line">input.pluck(<span class="string">'data'</span>).distinctUntilChanged()</span><br><span class="line">  .subscribe(<span class="function"><span class="params">value</span> =&gt;</span> <span class="built_in">console</span>.log(value)); <span class="comment">// "helo world"</span></span><br></pre></td></tr></table></figure>
+<p>### </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://link01.top/2018/10/31/performance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="link">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Filip">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/31/performance/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-31T16:23:52+08:00">
+                2018-10-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/31/performance/" class="leancloud_visitors" data-flag-title="">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前端性能"><a href="#前端性能" class="headerlink" title="前端性能"></a>前端性能</h1><p><strong>性能API上的流程时间点</strong>（timing的整体结构）<br><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fx6f9oc290j314v0ofdjm.jpg" alt="性能API上的流程时间点"></p>
+<ul>
+<li>navigationStart: 表示从上一个文档卸载结束时的 unix 时间戳，如果没有上一个文档，这个值将和 fetchStart 相等。</li>
+<li>unloadEventStart: 表示前一个网页（与当前页面同域）unload 的时间戳，如果无前一个网页 unload 或者前一个网页与当前页面不同域，则值为 0。</li>
+<li>unloadEventEnd: 返回前一个页面 unload 时间绑定的回调函数执行完毕的时间戳。</li>
+<li>redirectStart: 第一个 HTTP 重定向发生时的时间。有跳转且是同域名内的重定向才算，否则值为 0。</li>
+<li>redirectEnd: 最后一个 HTTP 重定向完成时的时间。有跳转且是同域名内部的重定向才算，否则值为 0。</li>
+<li>fetchStart: 浏览器准备好使用 HTTP 请求抓取文档的时间，这发生在检查本地缓存之前。</li>
+<li>domainLookupStart/domainLookupEnd: DNS 域名查询开始/结束的时间，如果使用了本地缓存（即无 DNS 查询）或持久连接，则与 fetchStart 值相等</li>
+<li>connectStart: HTTP（TCP）开始/重新 建立连接的时间，如果是持久连接，则与 fetchStart 值相等。</li>
+<li>connectEnd: HTTP（TCP） 完成建立连接的时间（完成握手），如果是持久连接，则与 fetchStart 值相等。</li>
+<li>secureConnectionStart: HTTPS 连接开始的时间，如果不是安全连接，则值为 0。</li>
+<li>requestStart: HTTP 请求读取真实文档开始的时间（完成建立连接），包括从本地读取缓存。</li>
+<li>responseStart: HTTP 开始接收响应的时间（获取到第一个字节），包括从本地读取缓存。</li>
+<li>responseEnd: HTTP 响应全部接收完成的时间（获取到最后一个字节），包括从本地读取缓存。</li>
+<li>domLoading: 开始解析渲染 DOM 树的时间，此时 Document.readyState 变为 loading，并将抛出 readystatechange 相关事件。</li>
+<li>domInteractive: 完成解析 DOM 树的时间，Document.readyState 变为 interactive，并将抛出 readystatechange 相关事件，注意只是 DOM 树解析完成，这时候并没有开始加载网页内的资源。</li>
+<li>domContentLoadedEventStart: DOM 解析完成后，网页内资源加载开始的时间，在 DOMContentLoaded 事件抛出前发生。</li>
+<li>domContentLoadedEventEnd: DOM 解析完成后，网页内资源加载完成的时间（如 JS 脚本加载执行完毕）。</li>
+<li>domComplete: DOM 树解析完成，且资源也准备就绪的时间，Document.readyState 变为 complete，并将抛出 readystatechange 相关事件。</li>
+<li>loadEventStart: load 事件发送给文档，也即 load 回调函数开始执行的时间。</li>
+<li>loadEventEnd: load 事件的回调函数执行完毕的时间。</li>
+</ul>
+<p>or</p>
+<ul>
+<li><p><code>startTime</code>：有些浏览器实现为<a href="https://msdn.microsoft.com/en-us/library/ff974724(v=vs.85" target="_blank" rel="noopener"><code>navigationStart</code></a>.aspx)，代表浏览器开始unload前一个页面文档的开始时间节点。比如我们当前正在浏览baidu.com，在地址栏输入google.com并回车，浏览器的执行动作依次为：unload当前文档（即baidu.com）-&gt;请求下一文档（即google.com）。navigationStart的值便是触发unload当前文档的时间节点。</p>
+<blockquote>
+<p>如果当前文档为空，则navigationStart的值等于fetchStart。</p>
+</blockquote>
+</li>
+<li><p><code>redirectStart</code>和<code>redirectEnd</code>：如果页面是由redirect而来，则redirectStart和redirectEnd分别代表redirect开始和结束的时间节点；</p>
+</li>
+<li><p><code>unloadEventStart</code>和<code>unloadEventEnd</code>：如果前一个文档和请求的文档是同一个域的，则<code>unloadEventStart</code>和<code>unloadEventEnd</code>分别代表浏览器unload前一个文档的开始和结束时间节点。否则两者都等于0；</p>
+</li>
+<li><p><code>fetchStart</code>是指在浏览器发起任何请求之前的时间值。在fetchStart和<code>domainLookupStart</code>之间，浏览器会检查当前文档的缓存；</p>
+</li>
+<li><p><code>domainLookupStart</code>和<code>domainLookupEnd</code>分别代表DNS查询的开始和结束时间节点。如果浏览器没有进行DNS查询（比如使用了cache），则两者的值都等于<code>fetchStart</code>；</p>
+</li>
+<li><p><code>connectStart</code>和<code>connectEnd</code>分别代表TCP建立连接和连接成功的时间节点。如果浏览器没有进行TCP连接（比如使用持久化连接webscoket），则两者都等于<code>domainLookupEnd</code>；</p>
+</li>
+<li><p><code>secureConnectionStart</code>：可选。如果页面使用HTTPS，它的值是安全连接握手之前的时刻。如果该属性不可用，则返回undefined。如果该属性可用，但没有使用HTTPS，则返回0；</p>
+</li>
+<li><p><code>requestStart</code>代表浏览器发起请求的时间节点，请求的方式可以是请求服务器、缓存、本地资源等；</p>
+</li>
+<li><p><code>responseStart</code>和<code>responseEnd</code>分别代表浏览器收到从服务器端（或缓存、本地资源）响应回的第一个字节和最后一个字节数据的时刻；</p>
+</li>
+<li><p><code>domLoading</code>代表浏览器开始解析html文档的时间节点。我们知道IE浏览器下的document有<code>readyState</code>属性，<code>domLoading</code>的值就等于<code>readyState</code>改变为<code>loading</code>的时间节点；</p>
+</li>
+<li><p><code>domInteractive</code>代表浏览器解析html文档的状态为<code>interactive</code>时的时间节点。<code>domInteractive</code>并非DOMReady，它早于DOMReady触发，代表html文档解析完毕（即dom tree创建完成）但是内嵌资源（比如外链css、js等）还未加载的时间点；</p>
+</li>
+<li><p><code>domContentLoadedEventStart</code>：代表<code>DOMContentLoaded</code>事件触发的时间节点：</p>
+<blockquote>
+<p>页面文档完全加载并解析完毕之后,会触发DOMContentLoaded事件，HTML文档不会等待样式文件,图片文件,子框架页面的加载(load事件可以用来检测HTML页面是否完全加载完毕(fully-loaded))。</p>
+</blockquote>
+</li>
+<li><p><code>domContentLoadedEventEnd</code>：代表<code>DOMContentLoaded</code>事件完成的时间节点，此刻用户可以对页面进行操作，也就是JS 脚本加载执行完毕或者jQuery中的domready时间；</p>
+</li>
+<li><p><code>domComplete</code>：html文档完全解析完毕的时间节点；</p>
+</li>
+<li><p><code>loadEventStart</code>和<code>loadEventEnd</code>分别代表onload事件触发和结束的时间节点</p>
+</li>
+</ul>
+<p><strong>DOM的时间点</strong></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fx6fc3x5quj309n08umxm.jpg" alt=""></p>
+<p>上图几个DOM时间点的解释：</p>
+<ul>
+<li><p>domLoading：这是整个过程的起始时间戳，浏览器即将开始解析第一批收到的 HTML 文档字节。</p>
+</li>
+<li><p>domInteractive：表示浏览器完成对所有 HTML 的解析并且 DOM 构建完成的时间点。</p>
+</li>
+<li><p>domContentLoaded：表示 DOM 准备就绪并且没有样式表阻止 JavaScript 执行的时间点，这意味着现</p>
+<p>在我们可以构建渲染树了。</p>
+<ul>
+<li>许多 JavaScript 框架都会等待此事件发生后，才开始执行它们自己的逻辑。因此，浏览器会捕获<br>EventStart 和 EventEnd 时间戳，让我们能够追踪执行所花费的时间。</li>
+</ul>
+</li>
+<li><p>domComplete：顾名思义，所有处理完成，并且网页上的所有资源（图像等）都已下载完毕，也就是说，加载转环已停止旋转。</p>
+</li>
+<li><p>loadEvent：作为每个网页加载的最后一步，浏览器会触发 onload 事件，以便触发额外的应用逻辑。</p>
+</li>
+</ul>
+<h4 id="2-2-2-计算性能指标"><a href="#2-2-2-计算性能指标" class="headerlink" title="2.2.2 计算性能指标"></a>2.2.2 计算性能指标</h4><p>可以使用<code>Navigation.timing</code> 统计到的时间数据来计算一些页面性能指标，比如DNS查询耗时、白屏时间、domready等等。如下：</p>
+<ul>
+<li>DNS查询耗时 = domainLookupEnd - domainLookupStart</li>
+<li>TCP链接耗时 = connectEnd - connectStart</li>
+<li>request请求耗时 = responseEnd - responseStart</li>
+<li>解析dom树耗时 = domComplete - domInteractive</li>
+<li>白屏时间 = domloadng - fetchStart</li>
+<li>domready时间 = domContentLoadedEventEnd - fetchStart</li>
+<li>onload时间 = loadEventEnd - fetchStart</li>
+</ul>
+<h3 id="W3C-API"><a href="#W3C-API" class="headerlink" title="W3C API"></a>W3C API</h3><p>window.performance 是W3C性能小组引入的新的API，目前IE9以上的浏览器都支持。在Console Tab下，我们可以通过输入window.performance.timing来查询到浏览器显示一个页面，各个阶段所耗费的时间。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fx6fhyllqej30bf0d70ue.jpg" alt=""></p>
+<p>除了timing字段，performance还有几个字段，可以让我们对页面进行更好的分析</p>
+<ol>
+<li><p>memory字段代表的是JS对内存的占用</p>
+</li>
+<li><p>navigation字段统计的是一些网页导航。</p>
+<p>2.1.  redirectCount 同源重定向的数量等</p>
+<p>2.2.  type 返回值是0，1，2，</p>
+<ul>
+<li>0 : TYPE_NAVIGATE (用户通过常规导航方式访问页面，比如点一个链接，或者一般的get方式)</li>
+<li>1 : TYPE_RELOAD (用户通过刷新，包括JS调用刷新接口等方式访问页面)</li>
+<li>2 : TYPE_BACK_FORWARD (用户通过后退按钮访问本页面)</li>
+</ul>
+</li>
+</ol>
+<h3 id="chrome-API"><a href="#chrome-API" class="headerlink" title="chrome API"></a>chrome API</h3><p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fx6fjvukvaj30c10frmzg.jpg" alt=""></p>
+<h2 id="performance"><a href="#performance" class="headerlink" title="performance"></a>performance</h2><p>之前chorme老版本名为timeline，指的是当你的页面在浏览器运行时的性能表现，用这个performance功能去分析Response, Animation, 以及 Idle 这三个性能指标。</p>
+<h3 id="Begin"><a href="#Begin" class="headerlink" title="Begin"></a>Begin</h3><ol>
+<li>打开Chrome的匿名模式。匿名模式可以保证Chrome在一个相对干净的环境下运行。比如，你安装了许多chrome插件，这些插件可能会影响我们分析性能表现。</li>
+<li>在匿名模式下打开右边这个链接，<a href="https://googlechrome.github.io/devtools-samples/jank/" target="_blank" rel="noopener">DEMO</a>，这个网页就是我们要用来分析的DEMO。这个页面里都是很多上下移动的蓝色小方块。</li>
+<li>右键检查Command+Opiton+I（Mac）或者Control+shift+I (Windows, Linux) 来打开Devtools。</li>
+<li>开发使用的电脑配置普遍较高，在Performance选项卡中，对于CPU，选择4x减速。DevTools限制你的CPU，使其比平时慢4倍。</li>
+</ol>
+<blockquote>
+<p>如果要确保它们在低端移动设备上运行良好，请将CPU限制设置为<strong>20x减速</strong>。</p>
+</blockquote>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwwyn0656fj30v40j441i.jpg" alt="performance"></p>
+<ol>
+<li>control 条，最上面一条，有录制，刷新页面，清除结果等操作</li>
+<li>overview总览图，横轴是时间线，包含fps帧率，cpu占用，net网络请求，页面性能的汇总</li>
+<li>火焰图，Network，Frames, Interactions, Main等 </li>
+<li>总结：精确到毫秒级的分析，按调用层级，事件分类的整理</li>
+</ol>
+<p>在火焰图的network中 ： </p>
+<ol>
+<li>HTML 文件为蓝色。 </li>
+<li>脚本为黄色。 </li>
+<li>样式表为紫色。 </li>
+<li>媒体文件为绿色。 </li>
+<li>其他资源为灰色。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">with</span>(performance)&#123;</span><br><span class="line">            readyStart = timing.fetchStart - timing.navigationStart;</span><br><span class="line">            redirectTime = timing.redirectEnd  - timing.redirectStart;</span><br><span class="line">            appcacheTime = timing.domainLookupStart  - timing.fetchStart;</span><br><span class="line">            unloadEventTime = timing.unloadEventEnd - timing.unloadEventStart;</span><br><span class="line">            lookupDomainTime = timing.domainLookupEnd - timing.domainLookupStart;</span><br><span class="line">            connectTime = timing.connectEnd - timing.connectStart;</span><br><span class="line">            requestTime = timing.responseEnd - timing.requestStart;</span><br><span class="line">            initDomTreeTime = timing.domInteractive - timing.responseEnd;</span><br><span class="line">            domReadyTime = timing.domContentLoadedEventEnd - timing.navigationStart;</span><br><span class="line">            loadTime = timing.loadEventEnd - timing.navigationStart;</span><br><span class="line">             <span class="comment">//过早获取时 domComplete有时会是0loadEventTime = timing.loadEventEnd - timing.loadEventStart;loadTime = timing.loadEventEnd - timing.navigationStart;</span></span><br><span class="line">             <span class="comment">//过早获取时 loadEventEnd有时会是0</span></span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'准备新页面时间耗时: '</span> + readyStart);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'redirect 重定向耗时: '</span> + redirectTime);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'Appcache 耗时: '</span> + appcacheTime);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'unload 前文档耗时: '</span> + unloadEventTime);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'DNS 查询耗时: '</span> + lookupDomainTime);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'TCP连接耗时: '</span> + connectTime);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'request请求耗时: '</span> + requestTime);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'请求完毕至DOM加载: '</span> + initDomTreeTime);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'DOM加载完成: '</span> + domReadyTime);</span><br><span class="line">            <span class="built_in">console</span>.log(<span class="string">'从开始至load总耗时: '</span> + loadTime);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,<span class="number">2000</span>) </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过分析，发现用此方法 DOM加载完成和全部加载完成耗用的时间和chrome浏览器NETWORDK面板上显示的DomContentLoaded 、Load时间基本一致，误差几ms，<br> 所以我们基本上可以用这个方法来统计我们所做的H5网站在不同地域、不同客户端下加载H5所耗用的时间，进而逐个优化。比如DNS耗时, DOM加载耗时了 </p>
+<h3 id="reflow（回流）"><a href="#reflow（回流）" class="headerlink" title="reflow（回流）"></a>reflow（回流）</h3><p>说到页面为什么会慢？那是因为浏览器要花时间、花精力去渲染，尤其是当它发现某个部分发生了点变化影响了布局，需要倒回去重新渲染， 该过程称为<strong>reflow（回流）。</strong></p>
+<p>在浏览器的渲染过程中（页面初始化，用户行为改变页面样式，动画改变页面样式） reflow（回流）repaint(重绘)都会大大影响web性能，尤其是h5页面。</p>
+<p>reflow 几乎是无法避免的。现在界面上流行的一些效果，比如树状目录的折叠、展开（实质上是元素的显示与隐藏）等，都将引起浏览器的 reflow。鼠标滑过、点击……只要这些行为引起了页面上某些元素的占位面积、定位方式、边距等属性的变化，都会引起它内部、周围甚至整个页面的重新渲 染。通常我们都无法预估浏览器到底会 reflow 哪一部分的代码，它们都彼此相互影响着。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://link01.top/2018/08/08/css-动画-PPT/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1523,325 +2036,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://link01.top/2018/02/15/js深拷贝浅拷贝/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="link">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Filip">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/15/js深拷贝浅拷贝/" itemprop="url">JS深拷贝和浅拷贝</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-15T14:18:35+08:00">
-                2018-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/js/" itemprop="url" rel="index">
-                    <span itemprop="name">js</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/02/15/js深拷贝浅拷贝/" class="leancloud_visitors" data-flag-title="JS深拷贝和浅拷贝">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          对于字符串类型，浅复制是对值的复制，对于对象来说，浅复制是对对象地址的复制，并没有开辟新的栈，也就是复制的结果是两个对象指向同一个地址，修改其中一个对象的属性，则另一个对象的属性也会改变，而深复制则是开辟新的栈，两个对象对应两个不同的地址，修改一个对象的属性，不会改变另一个对象的属性。
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/02/15/js深拷贝浅拷贝/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://link01.top/2018/01/11/ES6之promise/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="link">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Filip">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/11/ES6之promise/" itemprop="url">ES6之promise</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T13:58:37+08:00">
-                2018-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/默认分类/" itemprop="url" rel="index">
-                    <span itemprop="name">默认分类</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/01/11/ES6之promise/" class="leancloud_visitors" data-flag-title="ES6之promise">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          ES6之promise，promise对象是一个构造函数，用来生成Promise实例
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/11/ES6之promise/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1887,7 +2086,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
