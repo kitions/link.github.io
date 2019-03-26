@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next gemini use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -85,11 +85,11 @@
 <meta name="keywords" content="go">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go 坑之并发访问map">
-<meta property="og:url" content="http://link01.top/2019/03/13/go 坑之并发访问map/index.html">
+<meta property="og:url" content="https://kitions.github.io/2019/03/13/go 坑之并发访问map/index.html">
 <meta property="og:site_name" content="Filip">
 <meta property="og:description" content="go 坑之并发访问map,并发的对一个map进行读写是有问题的，主要是写">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-05T08:26:11.943Z">
+<meta property="og:updated_time" content="2019-03-26T08:50:41.860Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="go 坑之并发访问map">
 <meta name="twitter:description" content="go 坑之并发访问map,并发的对一个map进行读写是有问题的，主要是写">
@@ -100,7 +100,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -122,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://link01.top/2019/03/13/go 坑之并发访问map/"/>
+  <link rel="canonical" href="https://kitions.github.io/2019/03/13/go 坑之并发访问map/"/>
 
 
 
@@ -163,7 +163,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle"></p>
+        <h1 class="site-subtitle" itemprop="description"></h1>
       
   </div>
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://link01.top/2019/03/13/go 坑之并发访问map/">
+    <link itemprop="mainEntityOfPage" href="https://kitions.github.io/2019/03/13/go 坑之并发访问map/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="link">
@@ -320,7 +320,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">go 坑之并发访问map</h1>
+          <h2 class="post-title" itemprop="name headline">go 坑之并发访问map</h2>
         
 
         <div class="post-meta">
@@ -407,7 +407,7 @@
       
 
       
-        <h1 id="go-坑之并发访问map"><a href="#go-坑之并发访问map" class="headerlink" title="go 坑之并发访问map"></a>go 坑之并发访问map</h1><p> 并发的对一个map进行读写是有问题的，主要是写</p>
+        <h1 id="go-坑之并发访问map"><a href="#go-坑之并发访问map" class="headerlink" title="go 坑之并发访问map"></a>go 坑之并发访问map</h1><p> 并发的对一个map进行读写是有问题的，主要是写(ps: 并发的写map肯定是任何语言都不行的,真的傻)</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">简易解决方法 </span><br><span class="line"><span class="number">1.</span> 给 <span class="keyword">map</span> 加锁</span><br><span class="line"><span class="number">2.</span> 复制出来一个单独的<span class="keyword">map</span></span><br><span class="line">代码<span class="number">2</span>  <span class="comment">// cloneReq帮助函数  防止并发的协程 访问同一个map 造成panic</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">cloneReq</span><span class="params">(req <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span> <span class="title">map</span>[<span class="title">string</span>]<span class="title">string</span></span> &#123;</span><br><span class="line">	clone := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;&#125;</span><br><span class="line">	lock := sync.RWMutex&#123;&#125;</span><br><span class="line">	lock.RLock()</span><br><span class="line">	<span class="keyword">for</span> key, value := <span class="keyword">range</span> req &#123;</span><br><span class="line">		clone[key] = value</span><br><span class="line">	&#125;</span><br><span class="line">	lock.RUnlock()</span><br><span class="line">	<span class="keyword">return</span> clone</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>go提供了一种叫map的数据结构，可以翻译成映射，对应于其他语言的字典、哈希表。借助map，可以定义一个键和值，然后可以从map中获取、设置和删除这个值，尤其适合数据查找的场景。但是map的使用有一定的限制，如果是在单个协程中读写map，那么不会存在什么问题，如果是多个协程并发访问一个map，有可能会导致程序退出，并打印下面错误信息：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: concurrent <span class="keyword">map</span> read and <span class="keyword">map</span> write</span><br></pre></td></tr></table></figure>
@@ -556,7 +556,7 @@
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
               <p class="site-author-name" itemprop="name">link</p>
-              <p class="site-description motion-element" itemprop="description">明天放假可好</p>
+              <p class="site-description motion-element" itemprop="description"></p>
           </div>
 
           <nav class="site-state motion-element">
@@ -566,7 +566,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -629,13 +629,13 @@
                   <span class="links-of-author-item">
                     <a href="http://weibo.com/your-user-name" target="_blank" title="微博">
                       
-                        <i class="fa fa-fw fa-globe"></i>微博</a>
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
                   </span>
                 
                   <span class="links-of-author-item">
                     <a href="http://www.zhihu.com/people/your-user-name" target="_blank" title="知乎">
                       
-                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                        <i class="fa fa-fw fa-zhihu"></i>知乎</a>
                   </span>
                 
             </div>
