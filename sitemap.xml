@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kitions.github.io/2019/03/28/golang-http%E5%B0%81%E8%A3%85/</loc>
+    
+    <lastmod>2019-04-30T06:46:00.324Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitions.github.io/2019/04/15/node.js%20%E2%80%94%20koa%20%E2%80%94%20Typescript%20%E5%BE%AE%E4%BF%A1%E8%BF%9E%E6%8E%A5api/</loc>
+    
+    <lastmod>2019-04-30T06:39:05.224Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kitions.github.io/2017/08/15/angular%20246%20%E4%B8%AD%E7%9A%84%20html%E4%BB%A3%E7%A0%81%E8%A7%A3%E6%9E%90/</loc>
     
     <lastmod>2019-03-26T08:51:57.380Z</lastmod>
