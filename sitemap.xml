@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kitions.github.io/2019/12/30/golang%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E5%8F%98%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%EF%BC%8C%E6%A0%B9%E6%8D%AE%E5%AD%97%E6%AE%B5%E6%8E%92%E5%BA%8F%E9%9A%8F%E6%9C%BA/</loc>
+    
+    <lastmod>2019-12-30T03:16:33.268Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitions.github.io/about/index.html</loc>
+    
+    <lastmod>2019-10-11T09:11:44.604Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kitions.github.io/2019/10/11/gitignore/</loc>
     
     <lastmod>2019-10-11T09:09:55.657Z</lastmod>
@@ -215,13 +229,6 @@
     <loc>https://kitions.github.io/2017/05/01/hello-world/</loc>
     
     <lastmod>2018-09-03T09:39:28.439Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitions.github.io/about/index.html</loc>
-    
-    <lastmod>2018-08-29T14:24:46.000Z</lastmod>
     
   </url>
   
