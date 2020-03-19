@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="ES6," />
+  <meta name="keywords" content="Angnular," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="ES6之reduce遍历数组，利用reduce可以进行对数组对象的去重">
-<meta name="keywords" content="ES6">
+<meta name="description" content="ng2-ckedior上传图片的一些摸索，主要是ngAfterViewInit中的两个事件监听">
+<meta name="keywords" content="Angnular">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ES6之reduce (可数组对象的去重)">
-<meta property="og:url" content="https://kitions.github.io/2017/12/23/ES6之reduce/index.html">
+<meta property="og:title" content="Angular 6  -  ng2-ckedior上传图片自定义接口使用总结">
+<meta property="og:url" content="https://kitions.github.io/2020/03/19/Ng2-ckedior上传图片 自定义接口使用/index.html">
 <meta property="og:site_name" content="Filip">
-<meta property="og:description" content="ES6之reduce遍历数组，利用reduce可以进行对数组对象的去重">
+<meta property="og:description" content="ng2-ckedior上传图片的一些摸索，主要是ngAfterViewInit中的两个事件监听">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-03T09:47:51.892Z">
+<meta property="og:updated_time" content="2020-03-19T09:31:16.559Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ES6之reduce (可数组对象的去重)">
-<meta name="twitter:description" content="ES6之reduce遍历数组，利用reduce可以进行对数组对象的去重">
+<meta name="twitter:title" content="Angular 6  -  ng2-ckedior上传图片自定义接口使用总结">
+<meta name="twitter:description" content="ng2-ckedior上传图片的一些摸索，主要是ngAfterViewInit中的两个事件监听">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://kitions.github.io/2017/12/23/ES6之reduce/"/>
+  <link rel="canonical" href="https://kitions.github.io/2020/03/19/Ng2-ckedior上传图片 自定义接口使用/"/>
 
 
 
 
 
-  <title>ES6之reduce (可数组对象的去重) | Filip</title>
+  <title>Angular 6  -  ng2-ckedior上传图片自定义接口使用总结 | Filip</title>
   
 
 
@@ -303,7 +303,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://kitions.github.io/2017/12/23/ES6之reduce/">
+    <link itemprop="mainEntityOfPage" href="https://kitions.github.io/2020/03/19/Ng2-ckedior上传图片 自定义接口使用/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="link">
@@ -320,7 +320,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">ES6之reduce (可数组对象的去重)</h2>
+          <h2 class="post-title" itemprop="name headline">Angular 6  -  ng2-ckedior上传图片自定义接口使用总结</h2>
         
 
         <div class="post-meta">
@@ -332,8 +332,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-23T18:42:54+08:00">
-                2017-12-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-19T17:29:44+08:00">
+                2020-03-19
               </time>
             
 
@@ -373,8 +373,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/12/23/ES6之reduce/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2017/12/23/ES6之reduce/" itemprop="commentCount"></span>
+                <a href="/2020/03/19/Ng2-ckedior上传图片 自定义接口使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/03/19/Ng2-ckedior上传图片 自定义接口使用/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -382,7 +382,7 @@
 
           
           
-             <span id="/2017/12/23/ES6之reduce/" class="leancloud_visitors" data-flag-title="ES6之reduce (可数组对象的去重)">
+             <span id="/2020/03/19/Ng2-ckedior上传图片 自定义接口使用/" class="leancloud_visitors" data-flag-title="Angular 6  -  ng2-ckedior上传图片自定义接口使用总结">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -400,7 +400,7 @@
 
           
               <div class="post-description">
-                  ES6之reduce遍历数组，利用reduce可以进行对数组对象的去重
+                  ng2-ckedior上传图片的一些摸索，主要是ngAfterViewInit中的两个事件监听
               </div>
           
 
@@ -417,41 +417,8 @@
       
 
       
-        <p>除了for方法，研究数组的那几个迭代方法。使用下来，感觉确实妙用无穷，仿佛自己的逼格在无形中变得高大了一点点，重新一些总结文章。</p>
-<p>这篇文章就是专门总结reduce方法的，这个方法大有可研究的地方，值得大家get它并去同手实践一下。</p>
-<p>从最简单的例子开始。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span>  arr = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line">sum = arr.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">prev, cur, index, arr</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(prevres, cur, index);</span><br><span class="line">    <span class="keyword">return</span> prevres + cur;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(arr, sum);</span><br></pre></td></tr></table></figure>
-<p>输出结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1 2 1</span><br><span class="line">3 3 2</span><br><span class="line">6 4 3</span><br><span class="line">10 5 4</span><br><span class="line">[1, 2, 3, 4, 5] 15</span><br></pre></td></tr></table></figure>
-<p>我们先重新回顾一下reduce中回调函数的参数，这个回调函数中有4个参数，意思分别为</p>
-<p>prev: 第一项的值或者上一次叠加的结果值<br>cur: 当前会参与叠加的项<br>index： 当前值的索引<br>arr: 数组本身</p>
-<p>首先我们要区分prev与cur这2个参数的区别，刚开始的时候我以为他们是一种类型的，可是后来我发现我理解错了。prev表示每次叠加之后的结果，类型可能与数组中的每一项不同，而cur则表示数组中参与叠加的当前项。在后边我们可以结合实例来理解这个地方。</p>
-<p>其次我们看到，上例中其实值遍历了4次，数组有五项。数组中的第一项被当做了prev的初始值，而遍历从第二项开始。</p>
-<p>我们看下面一个例子。</p>
-<p>某同学的期末成绩如下表示</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = [</span><br><span class="line">    &#123;</span><br><span class="line">        subject: <span class="string">'math'</span>,</span><br><span class="line">        score: <span class="number">88</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        subject: <span class="string">'chinese'</span>,</span><br><span class="line">        score: <span class="number">95</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        subject: <span class="string">'english'</span>,</span><br><span class="line">        score: <span class="number">80</span></span><br><span class="line">    &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
-<p>如何求该同学的总成绩？</p>
-<p>很显然，利用for循环可以很简单得出结论</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var sum = 0;</span><br><span class="line">for(var i=0; i&lt;result.length; i++) &#123;</span><br><span class="line">    sum += result[i].score;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但是我们的宗旨就是抛弃for循环，因此使用reduce来搞定这个问题</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> sum = result.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">prev, cur</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> cur.score + prev;</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
-<p>这个时候，我给reduce参数添加了第二个参数。通过打印我发现设置了这个参数之后，reduce遍历便已经从第一项开始了。</p>
-<p>这第二个参数就是设置prev的初始类型和初始值，比如为0，就表示prev的初始值为number类型，值为0，因此，reduce的最终结果也会是number类型。</p>
-<p>因为第二个参数为累计结果的初始值，因此假设该同学因为违纪被处罚在总成绩总扣10分，只需要将初始值设置为-10即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var sum = result.reduce(function(prev, cur) &#123;</span><br><span class="line">    return cur.score + prev;</span><br><span class="line">&#125;, -10);</span><br></pre></td></tr></table></figure>
-<p>我们来给这个例子增加一点难度。假如该同学的总成绩中，各科所占的比重不同，分别为50%，30%，20%，我们应该如何求出最终的权重结果呢？</p>
-<p>解决方案如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var dis = &#123;</span><br><span class="line">    math: 0.5,</span><br><span class="line">    chinese: 0.3,</span><br><span class="line">    english: 0.2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var sum = result.reduce(function(prev, cur) &#123;</span><br><span class="line">    console.log(prev);</span><br><span class="line">    return cur.score + prev;</span><br><span class="line">&#125;, -10);</span><br><span class="line"></span><br><span class="line">var qsum = result.reduce(function(prev, cur) &#123;</span><br><span class="line">    return prev + cur.score * dis[cur.subject]</span><br><span class="line">&#125;, 0)</span><br><span class="line"></span><br><span class="line">console.log(sum, qsum);</span><br></pre></td></tr></table></figure>
-<p>为了计算出权重之后的总值，我们在回调函数内部修改了数组当前项，是使他和权重比例关联袭来，并重新返回一个一样的回调函数，将新修改的当前项传入，就和之前的例子是一样的了。</p>
-<p>有一道题，如何知道一串字符串中每个字母出现的次数？</p>
-<p>我们可以运用reduce来解决这个问题。</p>
-<p>我们在reduce的第二个参数里面初始了回调函数第一个参数的类型和值，将字符串转化为数组，那么迭代的结果将是一个对象，对象的每一项key值就是字符串的字母。运行感受一下吧。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arrString = <span class="string">'abcdaabc'</span>;</span><br><span class="line"></span><br><span class="line">arrString.split(<span class="string">''</span>).reduce(<span class="function"><span class="keyword">function</span>(<span class="params">res, cur</span>) </span>&#123;</span><br><span class="line">    res[cur] ? res[cur] ++ : res[cur] = <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;, &#123;&#125;)</span><br></pre></td></tr></table></figure>
-<p>由于可以通过第二参数设置叠加结果的类型初始值，因此这个时候reduce就不再仅仅只是做一个加法了，我们可以灵活的运用它来进行各种各样的类型转换，比如将数组按照一定规则转换为对象，也可以将一种形式的数组转换为另一种形式的数组，大家可以动手去尝试一样。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[1, 2].reduce(function(res, cur) &#123; </span><br><span class="line">    res.push(cur + 1); </span><br><span class="line">    return res; </span><br><span class="line">&#125;, [])</span><br></pre></td></tr></table></figure>
-<p>这种特性使得reduce在实际开发中大有可为！但是需要注意点，在ie9一下的浏览器中，并不支持该方法 ！</p>
-<h6 id="利用reduce可以对数组对象进行一个去重"><a href="#利用reduce可以对数组对象进行一个去重" class="headerlink" title="利用reduce可以对数组对象进行一个去重"></a>利用reduce可以对数组对象进行一个去重</h6><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = [</span><br><span class="line">    &#123;</span><br><span class="line">        subject: <span class="string">'math'</span>,</span><br><span class="line">        score: <span class="number">88</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        subject: <span class="string">'chinese'</span>,</span><br><span class="line">        score: <span class="number">55</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        subject: <span class="string">'chinese'</span>,</span><br><span class="line">        score: <span class="number">44</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        subject: <span class="string">'english'</span>,</span><br><span class="line">        score: <span class="number">55</span></span><br><span class="line">    &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        subject: <span class="string">'chimney'</span>,</span><br><span class="line">        score: <span class="number">35</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">        subject: <span class="string">'english'</span>,</span><br><span class="line">        score: <span class="number">80</span></span><br><span class="line">    &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">//这是一个数组里包含的对象</span></span><br><span class="line"><span class="keyword">var</span> hash=&#123;&#125;,arr=[]</span><br><span class="line"><span class="keyword">var</span> arr = result.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">res,cur</span>)</span>&#123;</span><br><span class="line">  hash[cur.subject] ? <span class="string">''</span> : hash[cur.subject] = <span class="literal">true</span> &amp;&amp; res.push(cur)  </span><br><span class="line">  <span class="keyword">return</span> res</span><br><span class="line">&#125;,[])</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(arr)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">reduce(function(res,cur)&#123;</span><br><span class="line">  </span><br><span class="line">&#125;,abc)</span><br><span class="line"></span><br><span class="line">//我个人理解abc这儿是一个初始化数据，比如写0，就定义为数字类型，res的初始值或者初始类型</span><br></pre></td></tr></table></figure>
+        <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// editor.module.ts</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; NgModule, CUSTOM_ELEMENTS_SCHEMA &#125; <span class="keyword">from</span> <span class="string">'@angular/core'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; ShareModule &#125; <span class="keyword">from</span> <span class="string">'../../../share/share.module'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; CKEditorModule &#125; <span class="keyword">from</span> <span class="string">'ng2-ckeditor'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; CkEditorComponent &#125; <span class="keyword">from</span> <span class="string">'./ckeditor/ckeditor.component'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">    declarations: [</span><br><span class="line">        CkEditorComponent,</span><br><span class="line">    ],</span><br><span class="line">    imports: [</span><br><span class="line">        ShareModule,</span><br><span class="line">        CKEditorModule,</span><br><span class="line">    ],</span><br><span class="line">    exports: [</span><br><span class="line">        CkEditorComponent</span><br><span class="line">    ],</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">NewsEditorModule</span> </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CkEditorComponent关键性代码</span></span><br><span class="line"><span class="comment">// this.actionURL上传链接</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> CkEditorComponent <span class="keyword">implements</span> ControlValueAccessor, OnInit,OnChanges, AfterViewInit &#123;</span><br><span class="line">  ngOnInit() &#123;</span><br><span class="line">        <span class="keyword">this</span>.ckeConfig =  &#123;</span><br><span class="line">            allowedContent: <span class="literal">false</span>,</span><br><span class="line">            extraPlugins: <span class="string">'divarea'</span>,</span><br><span class="line">            forcePasteAsPlainText: <span class="literal">false</span>,</span><br><span class="line">            height: <span class="number">500</span>,</span><br><span class="line">            toolbar: <span class="string">'Basic'</span>,</span><br><span class="line">            toolbarGroups: [</span><br><span class="line">                <span class="comment">// &#123; name: 'clipboard', groups: [ 'clipboard', 'undo' ] &#125;,</span></span><br><span class="line">                &#123; name: <span class="string">'editing'</span>, groups: [<span class="string">'find'</span>, <span class="string">'selection'</span>] &#125;, <span class="comment">// 'spellchecker'</span></span><br><span class="line">                &#123; name: <span class="string">'links'</span> &#125;,</span><br><span class="line">                &#123; name: <span class="string">'insert'</span> &#125;,</span><br><span class="line">                &#123; name: <span class="string">'forms'</span> &#125;,</span><br><span class="line">                &#123; name: <span class="string">'tools'</span> &#125;,</span><br><span class="line">                &#123; name: <span class="string">'document'</span>, groups: [<span class="string">'mode'</span>, <span class="string">'document'</span>, <span class="string">'doctools'</span>] &#125;,</span><br><span class="line">                &#123; name: <span class="string">'others'</span> &#125;,</span><br><span class="line">                &#123; name: <span class="string">'basicstyles'</span>, groups: [<span class="string">'basicstyles'</span>, <span class="string">'cleanup'</span>] &#125;,</span><br><span class="line">                &#123; name: <span class="string">'paragraph'</span>, groups: [<span class="string">'list'</span>, <span class="string">'indent'</span>, <span class="string">'align'</span>] &#125;,</span><br><span class="line">                &#123; name: <span class="string">'styles'</span> &#125;,</span><br><span class="line">                &#123; name: <span class="string">'colors'</span> &#125;,</span><br><span class="line">                <span class="comment">// &#123; name: 'about' &#125;</span></span><br><span class="line">            ],</span><br><span class="line">            filebrowserImageUploadUrl: <span class="keyword">this</span>.actionURL,</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">	ngAfterViewInit() &#123;</span><br><span class="line">        <span class="keyword">const</span> self = <span class="keyword">this</span>;</span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> instanceName <span class="keyword">in</span> CKEDITOR.instances) &#123;</span><br><span class="line">                self.editor = CKEDITOR.instances[instanceName];</span><br><span class="line">                self.editor.on(<span class="string">"instanceReady"</span>, <span class="function"><span class="keyword">function</span> (<span class="params">ev: <span class="built_in">any</span></span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">let</span> editor = ev.editor;</span><br><span class="line">                    <span class="comment">// 监听上传事件</span></span><br><span class="line">                    editor.on(<span class="string">'fileUploadRequest'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">evt</span>) </span>&#123;</span><br><span class="line">                        <span class="keyword">var</span> fileLoader = evt.data.fileLoader,</span><br><span class="line">                            formData = <span class="keyword">new</span> FormData(),</span><br><span class="line">                            xhr = fileLoader.xhr;</span><br><span class="line"></span><br><span class="line">                        xhr.open(<span class="string">'POST'</span>, fileLoader.uploadUrl, <span class="literal">true</span>);</span><br><span class="line">                        xhr.setRequestHeader(<span class="string">'TOKEN'</span>, self._cookie.get(CookiesService.KEY));</span><br><span class="line"></span><br><span class="line">                        formData.append(<span class="string">'upload'</span>, fileLoader.file, fileLoader.fileName);</span><br><span class="line">                        fileLoader.xhr.send(formData);</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// Prevented the default behavior.</span></span><br><span class="line">                        evt.stop();</span><br><span class="line">                    &#125;, <span class="literal">null</span>, <span class="literal">null</span>, <span class="number">4</span>);</span><br><span class="line">                    <span class="comment">// 监听返回事件</span></span><br><span class="line">                    editor.on(<span class="string">'fileUploadResponse'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">evt</span>) </span>&#123;</span><br><span class="line">                        <span class="comment">// Prevent the default response handler.</span></span><br><span class="line">                        evt.stop();</span><br><span class="line"></span><br><span class="line">                        <span class="comment">// Get XHR and response.</span></span><br><span class="line">                        <span class="keyword">var</span> data = evt.data,</span><br><span class="line">                            xhr = data.fileLoader.xhr,</span><br><span class="line">                            response = xhr.responseText.split(<span class="string">'|'</span>);</span><br><span class="line"></span><br><span class="line">                        <span class="keyword">if</span> (response[<span class="number">1</span>]) &#123;</span><br><span class="line">                            <span class="comment">// An error occurred during upload.</span></span><br><span class="line">                            data.message = response[<span class="number">1</span>];</span><br><span class="line">                            evt.cancel();</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">try</span> &#123;</span><br><span class="line">                                <span class="keyword">if</span> (response[<span class="number">0</span>]) &#123;</span><br><span class="line">                                    <span class="keyword">const</span> res = <span class="built_in">JSON</span>.parse(response[<span class="number">0</span>]);</span><br><span class="line">                                    <span class="keyword">if</span> (res.code === <span class="number">0</span>) &#123;</span><br><span class="line">                                        data.url = res.data &amp;&amp; res.data.key;</span><br><span class="line">                                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                        data.message = res.msg;</span><br><span class="line">                                    &#125;</span><br><span class="line">                                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                                    data.message = <span class="string">"上传失败了"</span>;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125; <span class="keyword">catch</span> (error) &#123;</span><br><span class="line">                                <span class="built_in">console</span>.log(<span class="string">"上传图片出错"</span>, error);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;);</span><br><span class="line">                &#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -498,7 +465,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ES6/" rel="tag"># ES6</a>
+            <a href="/tags/Angnular/" rel="tag"># Angnular</a>
           
         </div>
       
@@ -511,8 +478,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/14/ES6֮promise/" rel="next" title="ES6之promise">
-                <i class="fa fa-chevron-left"></i> ES6之promise
+              <a href="/2020/03/03/Next.js - FQ/" rel="next" title="Next.js - FQ">
+                <i class="fa fa-chevron-left"></i> Next.js - FQ
               </a>
             
           </div>
@@ -520,10 +487,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/01/04/vue.js 双向绑定原理/" rel="prev" title="VUE.JS 双向绑定实现原理Object.defineProperty()">
-                VUE.JS 双向绑定实现原理Object.defineProperty() <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -578,17 +541,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -689,22 +643,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-6"><a class="nav-link" href="#利用reduce可以对数组对象进行一个去重"><span class="nav-number">1.</span> <span class="nav-text">利用reduce可以对数组对象进行一个去重</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
