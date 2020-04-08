@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kitions.github.io/2018/01/11/ES6%E4%B9%8Bpromise/</loc>
+    
+    <lastmod>2020-04-08T03:46:55.849Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kitions.github.io/2020/04/02/Angular%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E8%A1%A8%E5%8D%95%E6%8E%A7%E4%BB%B6ControlValueAccessor/</loc>
     
     <lastmod>2020-04-07T02:02:39.036Z</lastmod>
@@ -166,13 +173,6 @@
     <loc>https://kitions.github.io/2018/08/08/css-%E5%8A%A8%E7%94%BB-PPT/</loc>
     
     <lastmod>2018-09-03T09:48:17.430Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitions.github.io/2018/01/11/ES6%E4%B9%8Bpromise/</loc>
-    
-    <lastmod>2018-09-03T09:48:06.316Z</lastmod>
     
   </url>
   
