@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Angnular," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Filip" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="React 的两大特色：React diff 和 Virtual Dom。React 中最值得称道的部分莫过于 Virtual DOM 与 diff 的完美结合，特别是其高效的 diff 算法，让用户可以无需顾忌性能问题而”任性自由”的刷新页面，让开发者也可以无需关心 Virtual DOM 背后的运作原理，因为 React diff 会帮助我们计算出 Virtual DOM 中真正变化的部分，并">
+<meta name="keywords" content="Angnular">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React 两大特色之React diff">
+<meta property="og:url" content="https://kitions.github.io/2020/05/18/React diff/index.html">
+<meta property="og:site_name" content="Filip">
+<meta property="og:description" content="React 的两大特色：React diff 和 Virtual Dom。React 中最值得称道的部分莫过于 Virtual DOM 与 diff 的完美结合，特别是其高效的 diff 算法，让用户可以无需顾忌性能问题而”任性自由”的刷新页面，让开发者也可以无需关心 Virtual DOM 背后的运作原理，因为 React diff 会帮助我们计算出 Virtual DOM 中真正变化的部分，并">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/qGAO7U2kXWx3eiu.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/14/iZWFCyOxuRKn52G.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/14/Avw4XQcBJDCFMf8.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/14/GCazVwlI52WcSxd.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/13/juDeNmIx9zRHGE1.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/18/tGXixoF8fMYVhDa.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/18/SpXsxoKOGFJmEbj.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/18/AOauJGyqPtEoHNW.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/18/r8vweGqTnVLUaic.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/18/WI7XbhK84QuJej5.png">
+<meta property="og:image" content="https://i.loli.net/2020/05/14/b4J7ntmFZLOlaAK.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1geqli50hv8j30b005uweh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1geqliamkyej30az05kglm.jpg">
+<meta property="og:updated_time" content="2020-05-19T01:44:26.881Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React 两大特色之React diff">
+<meta name="twitter:description" content="React 的两大特色：React diff 和 Virtual Dom。React 中最值得称道的部分莫过于 Virtual DOM 与 diff 的完美结合，特别是其高效的 diff 算法，让用户可以无需顾忌性能问题而”任性自由”的刷新页面，让开发者也可以无需关心 Virtual DOM 背后的运作原理，因为 React diff 会帮助我们计算出 Virtual DOM 中真正变化的部分，并">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/13/qGAO7U2kXWx3eiu.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'HYECV8YAZW',
+      apiKey: '8ba59849a179718d8a9c48e0b89c302e',
+      indexName: 'kition',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到该相关内容: ${query}","hits_stats":"${hits} 条记录  耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kitions.github.io/2020/05/18/React diff/"/>
+
+
+
+
+
+  <title>React 两大特色之React diff | Filip</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Filip</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kitions.github.io/2020/05/18/React diff/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="link">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Filip">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">React 两大特色之React diff</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-18T18:51:45+08:00">
+                2020-05-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/默认分类/" itemprop="url" rel="index">
+                    <span itemprop="name">默认分类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/18/React diff/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/05/18/React diff/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/05/18/React diff/" class="leancloud_visitors" data-flag-title="React 两大特色之React diff">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  React 的两大特色：React diff 和 Virtual Dom。React 中最值得称道的部分莫过于 Virtual DOM 与 diff 的完美结合，特别是其高效的 diff 算法，让用户可以无需顾忌性能问题而”任性自由”的刷新页面，让开发者也可以无需关心 Virtual DOM 背后的运作原理，因为 React diff 会帮助我们计算出 Virtual DOM 中真正变化的部分，并只针对该部分进行实际 DOM 操作，而非重新渲染整个页面，从而保证了每次操作更新后页面的高效渲染，因此 Virtual DOM 与 diff 是保证 React 性能口碑的幕后推手。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="React-两大特色之React-diff"><a href="#React-两大特色之React-diff" class="headerlink" title="React 两大特色之React diff"></a>React 两大特色之React diff</h1><p>React 的两大特色：React diff 和 Virtual Dom。</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>React diff，是 Virtual DOM和渲染的性能保证，高效的diff算法极大地保障了React的性能。使我们的页面的构建效率提到了极大的提升。</p>
+<h2 id="传统的diff算法"><a href="#传统的diff算法" class="headerlink" title="传统的diff算法"></a>传统的diff算法</h2><p>传统diff算法通过循环递归对节点进行依次对比，效率低下，算法复杂度达到 O(n^3)，其中 n 是树中节点的总数。具体是怎么算出来的，可以查看知乎上的一个回答。</p>
+<p><a href="https://www.zhihu.com/question/66851503" target="_blank" rel="noopener">react的diff 从O(n^3)到 O(n) ，请问 O(n^3) 和O(n) 是怎么算出来？</a></p>
+<p>懒得点链接看下：</p>
+<p>传统Diff算法需要找到两个树的最小更新方式，所以需要[两两]对比每个叶子节点是否相同，对比就需要O(n^2)次了，再加上更新（移动、创建、删除）时需要遍历一次，所以是O(n^3)。</p>
+<p>查找不同就需要O(n^2)，找到差异后还要计算最小转换方式，最终结果为O(n^3)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Prev                  Last</span><br><span class="line">       A                     A  </span><br><span class="line">      / \                   / \</span><br><span class="line">     /   \                 /   \</span><br><span class="line">    B     D     ====&gt;     D     B</span><br><span class="line">   /                             \</span><br><span class="line">  C                               C</span><br></pre></td></tr></table></figure>
+<p>就上面两树的变化而言，若要达到最小更新，首先要对比每个节点是否相同，也就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">PA-&gt;LA</span><br><span class="line">PA-&gt;LB</span><br><span class="line">PA-&gt;LC</span><br><span class="line">PA-&gt;LD</span><br><span class="line">PB-&gt;LA</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>React的Diff算法完全不同，简单到有些粗暴，过程如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 按叶子节点位置比较</span><br><span class="line">[0,0]     :     PA-&gt;LA   # 相同，不理会</span><br><span class="line">[0.0, 0.0]:     PB-&gt;LD   # 不同，删除PB，添加LD</span><br><span class="line">[0.1, 0.1]:     PD-&gt;LB   # 不同，更新</span><br><span class="line">[0.1.0, 0.1.0]: PC-&gt;Null # Last树没有该节点，所以删除PC即可</span><br><span class="line">[0.1.2, 0.1.2]: Null-&gt;LC # Prev树没有该节点，所以添加C到该位置</span><br></pre></td></tr></table></figure>
+<p>标准的O(n)，所有的节点只遍历一次。</p>
+<p>React认为：一个ReactElement的type不同，那么内容基本不会复用，所以直接删除节点，添加新节点，这是一个非常大的优化，大大减少了对比时间复杂度。</p>
+<p>O(n^3)到O(n)的提升有多大，通过一张图来看一下</p>
+<p><img src="https://i.loli.net/2020/05/13/qGAO7U2kXWx3eiu.png" alt="image.png"></p>
+<h2 id="React的diff策略"><a href="#React的diff策略" class="headerlink" title="React的diff策略"></a>React的diff策略</h2><ol>
+<li><p>策略一：忽略Web UI中DOM节点跨层级移动；（跨层级不进行比较）</p>
+</li>
+<li><p>策略二：拥有相同类型的两个组件产生的DOM结构也是相似的，不同类型的两个组件产生的DOM结构则不近相同（不同类不进行比较，同级节点做diff）</p>
+</li>
+<li><p>策略三：对于同一层级的一组子节点，通过分配唯一id进行区分（同类同级通过key比较）</p>
+</li>
+</ol>
+<p>在Web UI的场景下，基于以上三个点，React对tree diff、component diff、element diff进行优化，将普适diff的复杂度降低到一个数量级，保证了整体UI界面的构建性能！</p>
+<h3 id="Tree-diff"><a href="#Tree-diff" class="headerlink" title="Tree diff"></a>Tree diff</h3><hr>
+<p>针对策略一，React对树的算法进行了优化，对树进行分层比较，两棵树只会对同一层次的节点进行比较。</p>
+<p>既然DOM节点跨层级的移动操作少到可以忽略不计，针对这一现象，React只会对相同层级的DOM节点进行比较，即同一个父节点下的所有子节点。当发现节点已经不存在时，则该节点及其子节点会被完全删除掉，不会进行下一步的比较。这样就只需要对树进行一次遍历，就能完成整个DOM树的比较。</p>
+<p><img src="https://i.loli.net/2020/05/14/iZWFCyOxuRKn52G.png" alt="image.png"></p>
+<p>前提是WEB ui 中的DOM节点跨层级的移动操作特别少，但并没有否定DOM节点跨层级的操作的存在，那么当遇到这种操作时，React的处理方式</p>
+<p>example； A(包括其子节点) –&gt; D</p>
+<p><img src="https://i.loli.net/2020/05/14/Avw4XQcBJDCFMf8.png" alt="image.png"></p>
+<p>由于React只会简单的考虑同层级节点的位置变换，而对于不同层级的节点，只会创建和删除操作。当根节点发现子节点的A消失了，就会直接销毁A，当D发现多了一个子节点A，则会创建新的A(包括子节点)作为其子节点。此时，diff的执行情况是；</p>
+<p>​                        CreateA —&gt;   CreateB —&gt;   CreateC —&gt;   DeleteA </p>
+<p>  所以，由此可以看出，当出现节点跨层级移动，并不会出现想象中的直接把整个A节点移动到D节点下的移动操作，而是以A节点的整个树会被重新创建。so，这是一种影响React性能的操作，因此官方建议不要进行DOM节点跨层级的操作。</p>
+<blockquote>
+<p>在开发组件时，保持稳定的 DOM 结构会有助于性能的提升。例如，可以通过 CSS 隐藏或显示节点，而不是真正地移除或添加 DOM 节点。</p>
+</blockquote>
+<p>图整个处理过程：</p>
+<p><img src="https://i.loli.net/2020/05/14/GCazVwlI52WcSxd.png" alt="image.png"></p>
+<h3 id="Component-diff"><a href="#Component-diff" class="headerlink" title="Component diff"></a>Component diff</h3><hr>
+<p>React 是基于组件构建应用的，对于组件间的比较所采取的策略也是简洁、高效的。</p>
+<ol>
+<li><p><strong>如果是同一类型的组件，按照原策略继续比较 Virtual DOM 树即可。</strong></p>
+</li>
+<li><p><strong>如果不是，则将该组件判定为dirty component，从而替换整个组件下的所有子节点</strong></p>
+</li>
+<li><p><strong>对于同一类型的组件，有可能其Virtual DOM没有任何变化，如果能够确切知道这点，那么可以节省大量的diff运算时间，因此，React允许用户通过ShouldComponentUpdate()来判断该组件是否需要进行diff算法，但如果调用了forceUpdate方法，ShouldComponentUpdate会失效</strong></p>
+<p>example； D –&gt; G</p>
+</li>
+</ol>
+<p><img src="https://i.loli.net/2020/05/13/juDeNmIx9zRHGE1.png" alt="image.png"></p>
+<p>内部流程</p>
+<p><img src="https://i.loli.net/2020/05/18/tGXixoF8fMYVhDa.png" alt="image.png"></p>
+<p>当组件D变为组件G时,即使这两个组件的结构相似,一旦React判断D和G是不同类型的组件，就不会比较二者的结构，而是直接删除组件D，重新创建组件G及其子节点。虽然当两个组件时不同类型但结构相似时，diff会影响性能，但入React官方所说，不同类型的组件很少存在相似DOM树的情况，因此这种极端因素很难在实际开发过程中造成较大的影响。</p>
+<h3 id="Element-diff"><a href="#Element-diff" class="headerlink" title="Element diff"></a>Element diff</h3><p>当节点处于同于同一层级时候，diff提供了3种节点操作，分别是INSERT_MARKUP(插入)、MOVE_EXISTING(移动)、REMOVE_NODE(删除)</p>
+<ul>
+<li>插入：新的自考吗；新的组件类型不在旧集合里，即全新的节点，需要对新节点执行插入操作</li>
+<li>移动：旧集合里有新组件类型，且element是可更新的类型，generateComponentChildren 已调用 receiveComponent ，这种情况下 prevChild=nextChild ，就需要做移动操作，可以复用以前的 DOM 节点。</li>
+<li>删除：旧组件类型，在新集合里也有，但对应的element不同则不能直接复用和更新，需要执行删除操作，或者旧组件不在新集合里，也需要执行删除操作。</li>
+</ul>
+<p><img src="https://i.loli.net/2020/05/18/SpXsxoKOGFJmEbj.png" alt=""></p>
+<p>旧集合中包含节点A、B、C和D，</p>
+<p>更新后的新集合中包含节点B、A、D和C，</p>
+<p>此时新旧集合进行diff差异化对比，发现B!=A，则创建并插入B至新集合，删除旧集合A;以此类推，创建并插入A、D和C，删除B、C和D。</p>
+<hr>
+<p>我们发现这些都是相同的节点，仅仅是位置发生了变化，但却需要进行繁杂低效的删除、创建操作，其实只要对这些节点进行位置移动即可。React针对这一现象提出了一种优化策略：<strong>允许开发者对同一层级的同组子节点，添加唯一key进行区分</strong>。虽然这只是小小的改动，性能上却发生了翻天覆地的变化，再来看一下应用了这个策略之后，diff是如何处理的</p>
+<p><img src="https://i.loli.net/2020/05/18/AOauJGyqPtEoHNW.png" alt="image.png"></p>
+<p>通过key可以准确的发现新旧集合中的节点都是相同的节点，因此无需进行节点删除和创建，只需要将旧集合中的位置进行移动，更新为新集合中节点的位置名词是的React给出的diff结果为：B、D不做任何操作，A、C进行移动操作就行。</p>
+<p>具体的流程看表格：</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th style="text-align:left">节点</th>
+<th style="text-align:left">oldIndex</th>
+<th style="text-align:left">lastIndex</th>
+<th style="text-align:left">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td style="text-align:left">B</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">oldIndex(1)&gt;lastIndex(0),lastIndex=oldIndex，lastIndex变为1</td>
+</tr>
+<tr>
+<td>1</td>
+<td style="text-align:left">A</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">oldIndex(0)&lt;lastIndex(1),节点A移动至index(1)的位置</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:left">D</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">oldIndex(3)&gt;lastIndex(1),lastIndex=oldIndex，lastIndex变为3</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align:left">C</td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">oldIndex(2)&lt;lastIndex(3),节点C移动至index(3)的位置</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>index： 新集合的遍历下标。</li>
+<li>oldIndex：当前节点在老集合中的下标。</li>
+<li>lastIndex：在新集合访问过的节点中，其在老集合的最大下标值(在老集合中最右的位置, 即最大的位置)。</li>
+</ul>
+<p>操作一栏中只比较oldIndex和lastIndex：</p>
+<ul>
+<li>当oldIndex&gt;lastIndex时，将oldIndex的值赋值给lastIndex</li>
+<li>当oldIndex=lastIndex时，不操作</li>
+<li>当oldIndex&lt;lastIndex时，将当前节点移动到index的位置，源码中的enqueueMove(this, child._mountIndex, toIndex)，其中 toIndex 其实就是 nextIndex</li>
+</ul>
+<p>更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex),  prevChild._mountIndex 表示 节点在老集合中的位置，nextIndex++ 进入下一个节点的判断</p>
+<p>下面是比较详细的过程，不赘述了</p>
+<ul>
+<li>从新集合中取得 B，判断老集合中存在相同节点 B，通过对比节点位置判断是否进行移动操作，B 在老集合中的位置 B._mountIndex = 1，此时 lastIndex = 0，不满足 child._mountIndex &lt; lastIndex 的条件，因此不对 B 进行移动操作；更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex)，其中 prevChild._mountIndex 表示 B 在老集合中的位置，则 lastIndex ＝ 1，并将 B 的位置更新为新集合中的位置prevChild._mountIndex = nextIndex，此时新集合中 B._mountIndex = 0，nextIndex++ 进入下一个节点的判断。</li>
+<li>从新集合中取得 A，判断老集合中存在相同节点 A，通过对比节点位置判断是否进行移动操作，A 在老集合中的位置 A._mountIndex = 0，此时 lastIndex = 1，满足 child._mountIndex &lt; lastIndex的条件，因此对 A 进行移动操作enqueueMove(this, child._mountIndex, toIndex)，其中 toIndex 其实就是 nextIndex，表示 A 需要移动到的位置；更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex)，则 lastIndex ＝ 1，并将 A 的位置更新为新集合中的位置 prevChild._mountIndex = nextIndex，此时新集合中A._mountIndex = 1，nextIndex++ 进入下一个节点的判断。</li>
+<li>从新集合中取得 D，判断老集合中存在相同节点 D，通过对比节点位置判断是否进行移动操作，D 在老集合中的位置 D._mountIndex = 3，此时 lastIndex = 1，不满足 child._mountIndex &lt; lastIndex的条件，因此不对 D 进行移动操作；更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex)，则 lastIndex ＝ 3，并将 D 的位置更新为新集合中的位置 prevChild._mountIndex = nextIndex，此时新集合中D._mountIndex = 2，nextIndex++ 进入下一个节点的判断。</li>
+<li>从新集合中取得 C，判断老集合中存在相同节点 C，通过对比节点位置判断是否进行移动操作，C 在老集合中的位置 C._mountIndex = 2，此时 lastIndex = 3，满足 child._mountIndex &lt; lastIndex 的条件，因此对 C 进行移动操作 enqueueMove(this, child._mountIndex, toIndex)；更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex)，则 lastIndex ＝ 3，并将 C 的位置更新为新集合中的位置 prevChild._mountIndex = nextIndex，此时新集合中 C._mountIndex = 3，nextIndex++ 进入下一个节点的判断，由于 C 已经是最后一个节点，因此 diff 到此完成。</li>
+</ul>
+<hr>
+<p>上面例子是新旧集合中的节点都是相同的节点的情况下，那如果新集合中有新加入的节点且旧集合存在 需要删除的节点，那么 diff 又是如何对比运作的</p>
+<p>ABCD –&gt; BECA</p>
+<table>
+<thead>
+<tr>
+<th>index</th>
+<th style="text-align:left">节点</th>
+<th style="text-align:left">oldIndex</th>
+<th style="text-align:left">lastIndex</th>
+<th style="text-align:left">操作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td style="text-align:left">B</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">oldIndex(1)&gt;lastIndex(0)，lastIndex=oldIndex，lastIndex变为1</td>
+</tr>
+<tr>
+<td>1</td>
+<td style="text-align:left">E</td>
+<td style="text-align:left">-</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">oldIndex不存在，添加节点E至index(1)的位置</td>
+</tr>
+<tr>
+<td>2</td>
+<td style="text-align:left">C</td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">oldIndex(2)&gt;lastIndex(1),lastIndex=oldIndex，lastIndex变为2</td>
+</tr>
+<tr>
+<td>3</td>
+<td style="text-align:left">A</td>
+<td style="text-align:left">0</td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">oldIndex(0)&lt;lastIndex(2),节点A移动至index(3)的位置</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>PS：最后还需要对旧集合进行循环遍历，找出新集合中没有的节点，此时发现存在这样的节点D，因此删除节点D，到此 diff 操作全部完成。</p>
+</blockquote>
+<p>同样操作一栏中只比较oldIndex和lastIndex，但是oldIndex可能有不存在的情况：</p>
+<ul>
+<li>oldIndex存在<ol>
+<li>当oldIndex&gt;lastIndex时，将oldIndex的值赋值给lastIndex</li>
+<li>当oldIndex=lastIndex时，不操作</li>
+<li>当oldIndex&lt;lastIndex时，将当前节点移动到index的位置</li>
+</ol>
+</li>
+<li><p>oldIndex不存在</p>
+<ol>
+<li>新增当前节点至index的位置</li>
+</ol>
+<p><img src="https://i.loli.net/2020/05/18/r8vweGqTnVLUaic.png" alt="image.png"></p>
+</li>
+</ul>
+<hr>
+<p>当然这种diff并非完美无缺的，我们来看这么一种情况：</p>
+<p><img src="https://i.loli.net/2020/05/18/WI7XbhK84QuJej5.png" alt="image.png"></p>
+<p>实际我们只需对D执行移动操作，然而由于D在旧集合中的位置是最大的，导致其他节点的oldIndex &lt; lastIndex，造成D没有执行移动操作，而是A、B、C全部移动到D节点后面的现象。针对这种情况，官方建议：</p>
+<blockquote>
+<p>在开发过程中，尽量减少类似将最后一个节点移动到列表首部的操作。当节点数量过大或更新操作过于频繁时，这在一定程度上会影响React的渲染性能</p>
+</blockquote>
+<p>由于key的存在，react可以准确地判断出该节点在新集合中是否存在，这极大地提高了diff效率。我们在开发过中进行列表渲染的时候，若没有加key，react会抛出警告要求开发者加上key，就是为了提高diff效率。</p>
+<p>但是加了key一定要比没加key的性能更高吗？我们再来看一个例子：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">现在有一集合[1,2,3,4,5],渲染成如下的样子：</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">---------------</span><br><span class="line">现在我们将这个集合的顺序打乱变成[1,3,2,5,4]。</span><br><span class="line">1.加key</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'1'</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'1'</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span>     </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'2'</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'3'</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'3'</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  ========&gt;  <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'2'</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'4'</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'5'</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'5'</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'4'</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line">操作：节点2移动至下标为2的位置，节点4移动至下标为4的位置。</span><br><span class="line"></span><br><span class="line">2.不加key</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span>     </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  ========&gt;  <span class="tag">&lt;<span class="name">div</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line">操作：修改第1个到第5个节点的innerText</span><br><span class="line">---------------</span><br><span class="line">如果我们对这个集合进行增删的操作改成[1,3,2,5,6]。</span><br><span class="line">1.加key</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'1'</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'1'</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span>     </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'2'</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'3'</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'3'</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  ========&gt;  <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'2'</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'4'</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'5'</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'5'</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span> <span class="attr">key</span>=<span class="string">'6'</span>&gt;</span>6<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line">操作：节点2移动至下标为2的位置，新增节点6至下标为4的位置，删除节点4。</span><br><span class="line"></span><br><span class="line">2.不加key</span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span>&gt;</span>1<span class="tag">&lt;/<span class="name">div</span>&gt;</span>     </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>3<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  ========&gt;  <span class="tag">&lt;<span class="name">div</span>&gt;</span>2<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>4<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span>  </span><br><span class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span>5<span class="tag">&lt;/<span class="name">div</span>&gt;</span>             <span class="tag">&lt;<span class="name">div</span>&gt;</span>6<span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br><span class="line">操作：修改第1个到第5个节点的innerText</span><br><span class="line">---------------</span><br><span class="line">通过上面这两个例子我们发现：</span><br><span class="line">由于dom节点的移动操作开销是比较昂贵的，没有key的情况下要比有key的性能更好。</span><br></pre></td></tr></table></figure>
+<p>通过上面的例子我们发现，虽然加了key提高了diff效率，但是未必一定提升了页面的性能。因此我们要注意这么一点：</p>
+<blockquote>
+<p>对于简单列表页渲染来说，不加key要比加了key的性能更好</p>
+</blockquote>
+<p>根据上面的情况，最后我们总结一下key的作用：</p>
+<ul>
+<li>准确判断出当前节点是否在旧集合中</li>
+<li>极大地减少遍历次数</li>
+</ul>
+<h2 id="渲染"><a href="#渲染" class="headerlink" title="渲染"></a>渲染</h2><h4 id="合并操作"><a href="#合并操作" class="headerlink" title="合并操作"></a>合并操作</h4><p>当调用component的<code>setstate</code>时，React会将其标记为dirty。到每个时间循环结束，React检查所有标记dirty的component重新绘制</p>
+<p>这里的“合并操作”是说，在一个事件循环中，DOM只会被更新一次，这个特性是构建高性能应用的关键。</p>
+<p> <img src="https://i.loli.net/2020/05/14/b4J7ntmFZLOlaAK.png" alt=""></p>
+<h4 id="子树渲染"><a href="#子树渲染" class="headerlink" title="子树渲染"></a>子树渲染</h4><p>调用setState方法时，component会重新构建包括子树子节点的virtual DOM 。如果你在根节点调用<code>setState</code>,整个React应用都会被重新渲染。所有的component，即便没有更新，都会调用他们的render方法，这个听起来很可怕，性能实际上很低，但实际上我们不会触及真实的DOM，运行起来就没问题。</p>
+<p>在写react代码时，每当数据有更新，你都不会算调用根节点的<code>setState</code>。你会在需要接收对应的component上调用，或者在上面的几个component。你很少要一直到根节点。就是说页面更新只出现在用户交互的部分。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1geqli50hv8j30b005uweh.jpg" alt="img"></p>
+<h4 id="选择子树渲染"><a href="#选择子树渲染" class="headerlink" title="选择子树渲染"></a>选择子树渲染</h4><p>去掉一些子树的重新渲染.</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">boolean</span> shouldComponentUpdate(object nextProps, object nextState)</span><br></pre></td></tr></table></figure>
+<p>根据component的前一个和下一个<code>props/state</code>， 你可以告诉React这个component没有更新，也不需要重绘</p>
+<blockquote>
+<p>注意, 这个函数每次都会被调用, 所以你要确保运行起来花的时间更少,<br>比 React 的做法时间少, 还有比计算 component 需要的时间少,<br>即便重新绘制并不是必要的.</p>
+<p>Ps: 不过有可能你的方法里写的比React花费的时间更多</p>
+</blockquote>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1geqliamkyej30az05kglm.jpg" alt="img"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><p>React的高效得益于VIrtual DOM + React diff的体系。diff算法并非React独创，react只是在传统的diff算法中做了优化。但因为优化，将diff算法的时间复杂度一下从O(n^3) 降到了 O(n)。</p>
+</li>
+<li><p>开发组件时，保持稳定的dom结构会有助于性能的提升。</p>
+</li>
+<li><p>开发过程中，尽量减少类似将最后一个节点移动到列表首部的操作。</p>
+</li>
+<li><p>key的存在是为了提升diff效率，但未必一定就可以提升性能，记住简单列表渲染情况下，不加key要比加key的性能更好。（不过可能因为React console的提醒，大家都会加上，个人觉得这点性能问题不大）。</p>
+</li>
+<li><p>我们可以根据diff的特点，在具体场景中取长补短，规避一些算法上面的短板也是有利于提升应用整体的性能。</p>
+</li>
+</ul>
+<p>之后可以简单实现下diff</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://blog.csdn.net/sexy_squirrel/java/article/details/79801940" target="_blank" rel="noopener">浅谈React中的diff</a></p>
+<p><a href="https://www.zhihu.com/question/66851503/answer/246766239" target="_blank" rel="noopener">react的diff 从O(n^3)到 O(n) ，请问 O(n^3) 和O(n) 是怎么算出来？</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/20346379?refer=purerender" target="_blank" rel="noopener">React 源码剖析系列 － 不可思议的 react diff</a></p>
+<p><a href="https://juejin.im/post/5cb5b4926fb9a068b52fb823" target="_blank" rel="noopener">React diff原理探究以及应用实践</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>感谢你的打赏哦！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="link 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="link 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Angnular/" rel="tag"># Angnular</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/04/30/网易云转出歌单/" rel="next" title="网易云歌单转移到Apple Music、Spotify等流音乐平台">
+                <i class="fa fa-chevron-left"></i> 网易云歌单转移到Apple Music、Spotify等流音乐平台
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">link</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/kitions" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:nsplknsplk@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/nsplknsplk" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/your-user-name" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/your-user-name" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#React-两大特色之React-diff"><span class="nav-number">1.</span> <span class="nav-text">React 两大特色之React diff</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传统的diff算法"><span class="nav-number">1.2.</span> <span class="nav-text">传统的diff算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React的diff策略"><span class="nav-number">1.3.</span> <span class="nav-text">React的diff策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-diff"><span class="nav-number">1.3.1.</span> <span class="nav-text">Tree diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Component-diff"><span class="nav-number">1.3.2.</span> <span class="nav-text">Component diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-diff"><span class="nav-number">1.3.3.</span> <span class="nav-text">Element diff</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染"><span class="nav-number">1.4.</span> <span class="nav-text">渲染</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#合并操作"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">合并操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子树渲染"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">子树渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择子树渲染"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">选择子树渲染</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.4.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">link</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'ohCdgFTxBCqGAWc738RfOoS4-gzGzoHsz',
+        appKey: 'ePCpct3dlRSGr3dY2Og1UQSY',
+        placeholder: '来来来  输入你的评论吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ohCdgFTxBCqGAWc738RfOoS4-gzGzoHsz", "ePCpct3dlRSGr3dY2Og1UQSY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://kitions.github.io/2020/05/18/React%20diff/</loc>
+    
+    <lastmod>2020-05-19T01:44:26.881Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kitions.github.io/2019/05/07/WEB%20Notification%E9%80%9A%E7%9F%A5/</loc>
+    
+    <lastmod>2020-05-09T09:30:00.255Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://kitions.github.io/2020/04/30/%E7%BD%91%E6%98%93%E4%BA%91%E8%BD%AC%E5%87%BA%E6%AD%8C%E5%8D%95/</loc>
     
     <lastmod>2020-04-30T02:13:35.895Z</lastmod>
@@ -61,13 +75,6 @@
     <loc>https://kitions.github.io/2019/06/20/React%20hooks/</loc>
     
     <lastmod>2019-06-20T10:24:52.645Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://kitions.github.io/2019/05/07/WEB%20Notification%E9%80%9A%E7%9F%A5/</loc>
-    
-    <lastmod>2019-05-07T08:28:41.976Z</lastmod>
     
   </url>
   
