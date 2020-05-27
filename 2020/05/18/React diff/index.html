@@ -97,12 +97,13 @@
 <meta property="og:image" content="https://i.loli.net/2020/05/18/tGXixoF8fMYVhDa.png">
 <meta property="og:image" content="https://i.loli.net/2020/05/18/SpXsxoKOGFJmEbj.png">
 <meta property="og:image" content="https://i.loli.net/2020/05/18/AOauJGyqPtEoHNW.png">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf72uvqaenj30df0fdjtm.jpg">
 <meta property="og:image" content="https://i.loli.net/2020/05/18/r8vweGqTnVLUaic.png">
 <meta property="og:image" content="https://i.loli.net/2020/05/18/WI7XbhK84QuJej5.png">
 <meta property="og:image" content="https://i.loli.net/2020/05/14/b4J7ntmFZLOlaAK.png">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1geqli50hv8j30b005uweh.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1geqliamkyej30az05kglm.jpg">
-<meta property="og:updated_time" content="2020-05-19T01:53:43.858Z">
+<meta property="og:updated_time" content="2020-05-27T08:45:26.543Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React 两大特色之React diff">
 <meta name="twitter:description" content="React 的两大特色：React diff 和 Virtual Dom。React 中最值得称道的部分莫过于 Virtual DOM 与 diff 的完美结合，特别是其高效的 diff 算法，让用户可以无需顾忌性能问题而”任性自由”的刷新页面，让开发者也可以无需关心 Virtual DOM 背后的运作原理，因为 React diff 会帮助我们计算出 Virtual DOM 中真正变化的部分，并">
@@ -444,9 +445,8 @@
 <p>React的Diff算法完全不同，简单到有些粗暴，过程如下。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 按叶子节点位置比较</span><br><span class="line">[0,0]     :     PA-&gt;LA   # 相同，不理会</span><br><span class="line">[0.0, 0.0]:     PB-&gt;LD   # 不同，删除PB，添加LD</span><br><span class="line">[0.1, 0.1]:     PD-&gt;LB   # 不同，更新</span><br><span class="line">[0.1.0, 0.1.0]: PC-&gt;Null # Last树没有该节点，所以删除PC即可</span><br><span class="line">[0.1.2, 0.1.2]: Null-&gt;LC # Prev树没有该节点，所以添加C到该位置</span><br></pre></td></tr></table></figure>
 <p>标准的O(n)，所有的节点只遍历一次。</p>
-<p>React认为：一个ReactElement的type不同，那么内容基本不会复用，所以直接删除节点，添加新节点，这是一个非常大的优化，大大减少了对比时间复杂度。</p>
 <p>O(n^3)到O(n)的提升有多大，通过一张图来看一下</p>
-<p><img src="https://i.loli.net/2020/05/13/qGAO7U2kXWx3eiu.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2020/05/13/qGAO7U2kXWx3eiu.png" alt="image.png" style="zoom:50%;"></p>
 <h2 id="React的diff策略"><a href="#React的diff策略" class="headerlink" title="React的diff策略"></a>React的diff策略</h2><ol>
 <li><p>策略一：忽略Web UI中DOM节点跨层级移动；（跨层级不进行比较）</p>
 </li>
@@ -454,6 +454,12 @@
 </li>
 <li><p>策略三：对于同一层级的一组子节点，通过分配唯一id进行区分（同类同级通过key比较）</p>
 </li>
+</ol>
+<p>上面的好像不太通俗易懂</p>
+<ol>
+<li>一：只对同级元素进行Diff。如果一个DOM节点在前后两次更新中跨越了层级，那么React不会复用它。</li>
+<li>二：两个不同类型的元素会产生出不同的树。如果元素由div变为p，React会销毁div及其子孙节点，并新建p及其子孙节点。</li>
+<li>三：开发者可以通过 key属性 来暗示哪些子元素在不同的渲染下能保持稳定。</li>
 </ol>
 <p>在Web UI的场景下，基于以上三个点，React对tree diff、component diff、element diff进行优化，将普适diff的复杂度降低到一个数量级，保证了整体UI界面的构建性能！</p>
 <h3 id="Tree-diff"><a href="#Tree-diff" class="headerlink" title="Tree diff"></a>Tree diff</h3><hr>
@@ -486,19 +492,20 @@
 <p>内部流程</p>
 <p><img src="https://i.loli.net/2020/05/18/tGXixoF8fMYVhDa.png" alt="image.png"></p>
 <p>当组件D变为组件G时,即使这两个组件的结构相似,一旦React判断D和G是不同类型的组件，就不会比较二者的结构，而是直接删除组件D，重新创建组件G及其子节点。虽然当两个组件时不同类型但结构相似时，diff会影响性能，但入React官方所说，不同类型的组件很少存在相似DOM树的情况，因此这种极端因素很难在实际开发过程中造成较大的影响。</p>
-<h3 id="Element-diff"><a href="#Element-diff" class="headerlink" title="Element diff"></a>Element diff</h3><p>当节点处于同于同一层级时候，diff提供了3种节点操作，分别是INSERT_MARKUP(插入)、MOVE_EXISTING(移动)、REMOVE_NODE(删除)</p>
+<h3 id="Element-diff"><a href="#Element-diff" class="headerlink" title="Element diff"></a>Element diff</h3><p>当节点处于同于同一层级时候，diff提供了3种节点操作，分别是插入、移动、删除</p>
 <ul>
-<li>插入：新的自考吗；新的组件类型不在旧集合里，即全新的节点，需要对新节点执行插入操作</li>
-<li>移动：旧集合里有新组件类型，且element是可更新的类型，generateComponentChildren 已调用 receiveComponent ，这种情况下 prevChild=nextChild ，就需要做移动操作，可以复用以前的 DOM 节点。</li>
+<li>插入：新的组件类型不在旧集合里，即全新的节点，需要对新节点执行插入操作</li>
+<li>移动：旧集合里有新组件类型，且element是可更新的类型，这种情况下 prevChild=nextChild ，就需要做移动操作，可以复用以前的 DOM 节点。</li>
 <li>删除：旧组件类型，在新集合里也有，但对应的element不同则不能直接复用和更新，需要执行删除操作，或者旧组件不在新集合里，也需要执行删除操作。</li>
 </ul>
-<p><img src="https://i.loli.net/2020/05/18/SpXsxoKOGFJmEbj.png" alt=""></p>
+<p><img src="https://i.loli.net/2020/05/18/SpXsxoKOGFJmEbj.png" style="zoom: 33%;"></p>
 <p>旧集合中包含节点A、B、C和D，</p>
 <p>更新后的新集合中包含节点B、A、D和C，</p>
 <p>此时新旧集合进行diff差异化对比，发现B!=A，则创建并插入B至新集合，删除旧集合A;以此类推，创建并插入A、D和C，删除B、C和D。</p>
 <hr>
-<p>我们发现这些都是相同的节点，仅仅是位置发生了变化，但却需要进行繁杂低效的删除、创建操作，其实只要对这些节点进行位置移动即可。React针对这一现象提出了一种优化策略：<strong>允许开发者对同一层级的同组子节点，添加唯一key进行区分</strong>。虽然这只是小小的改动，性能上却发生了翻天覆地的变化，再来看一下应用了这个策略之后，diff是如何处理的</p>
-<p><img src="https://i.loli.net/2020/05/18/AOauJGyqPtEoHNW.png" alt="image.png"></p>
+<p>我们发现这些都是相同的节点，仅仅是位置发生了变化，但却需要进行繁杂低效的删除、创建操作，其实只要对这些节点进行位置移动即可。React针对这一现象提出了一种优化策略：<strong>让开发者对同一层级的同组子节点，添加唯一key进行区分</strong>。虽然这只是小小的改动，性能上却发生了翻天覆地的变化，再来看一下应用了这个策略之后，diff是如何处理的</p>
+<p>example:</p>
+<p><img src="https://i.loli.net/2020/05/18/AOauJGyqPtEoHNW.png" alt="image.png" style="zoom: 50%;"></p>
 <p>通过key可以准确的发现新旧集合中的节点都是相同的节点，因此无需进行节点删除和创建，只需要将旧集合中的位置进行移动，更新为新集合中节点的位置名词是的React给出的diff结果为：B、D不做任何操作，A、C进行移动操作就行。</p>
 <p>具体的流程看表格：</p>
 <table>
@@ -549,18 +556,16 @@
 </ul>
 <p>操作一栏中只比较oldIndex和lastIndex：</p>
 <ul>
-<li>当oldIndex&gt;lastIndex时，将oldIndex的值赋值给lastIndex</li>
-<li>当oldIndex=lastIndex时，不操作</li>
-<li>当oldIndex&lt;lastIndex时，将当前节点移动到index的位置，源码中的enqueueMove(this, child._mountIndex, toIndex)，其中 toIndex 其实就是 nextIndex</li>
+<li><p>当oldIndex&gt;lastIndex时，将oldIndex的值赋值给lastIndex</p>
+</li>
+<li><p>当oldIndex=lastIndex时，不操作</p>
+</li>
+<li><p>当oldIndex&lt;lastIndex时，将当前节点移动到index的位置，</p>
+<p>新版本React，应该是从v16起, placeChild(<em>newFiber</em>, <em>lastPlacedIndex</em>, <em>newIndex</em>), <em>lastPlacedIndex</em>就是当前的新fiber数组中已经遍历过的fiber中在上一次更新时的index中最大的那个，就是上面的lastIndex</p>
+</li>
 </ul>
-<p>更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex),  prevChild._mountIndex 表示 节点在老集合中的位置，nextIndex++ 进入下一个节点的判断</p>
-<p>下面是比较详细的过程，不赘述了</p>
-<ul>
-<li>从新集合中取得 B，判断老集合中存在相同节点 B，通过对比节点位置判断是否进行移动操作，B 在老集合中的位置 B._mountIndex = 1，此时 lastIndex = 0，不满足 child._mountIndex &lt; lastIndex 的条件，因此不对 B 进行移动操作；更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex)，其中 prevChild._mountIndex 表示 B 在老集合中的位置，则 lastIndex ＝ 1，并将 B 的位置更新为新集合中的位置prevChild._mountIndex = nextIndex，此时新集合中 B._mountIndex = 0，nextIndex++ 进入下一个节点的判断。</li>
-<li>从新集合中取得 A，判断老集合中存在相同节点 A，通过对比节点位置判断是否进行移动操作，A 在老集合中的位置 A._mountIndex = 0，此时 lastIndex = 1，满足 child._mountIndex &lt; lastIndex的条件，因此对 A 进行移动操作enqueueMove(this, child._mountIndex, toIndex)，其中 toIndex 其实就是 nextIndex，表示 A 需要移动到的位置；更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex)，则 lastIndex ＝ 1，并将 A 的位置更新为新集合中的位置 prevChild._mountIndex = nextIndex，此时新集合中A._mountIndex = 1，nextIndex++ 进入下一个节点的判断。</li>
-<li>从新集合中取得 D，判断老集合中存在相同节点 D，通过对比节点位置判断是否进行移动操作，D 在老集合中的位置 D._mountIndex = 3，此时 lastIndex = 1，不满足 child._mountIndex &lt; lastIndex的条件，因此不对 D 进行移动操作；更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex)，则 lastIndex ＝ 3，并将 D 的位置更新为新集合中的位置 prevChild._mountIndex = nextIndex，此时新集合中D._mountIndex = 2，nextIndex++ 进入下一个节点的判断。</li>
-<li>从新集合中取得 C，判断老集合中存在相同节点 C，通过对比节点位置判断是否进行移动操作，C 在老集合中的位置 C._mountIndex = 2，此时 lastIndex = 3，满足 child._mountIndex &lt; lastIndex 的条件，因此对 C 进行移动操作 enqueueMove(this, child._mountIndex, toIndex)；更新 lastIndex = Math.max(prevChild._mountIndex, lastIndex)，则 lastIndex ＝ 3，并将 C 的位置更新为新集合中的位置 prevChild._mountIndex = nextIndex，此时新集合中 C._mountIndex = 3，nextIndex++ 进入下一个节点的判断，由于 C 已经是最后一个节点，因此 diff 到此完成。</li>
-</ul>
+<p>  <del>老版本React源码中的enqueueMove(this, child._mountIndex, toIndex)，其中 toIndex 其实就是 nextIndex</del></p>
+<p>  <img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gf72uvqaenj30df0fdjtm.jpg" alt="image-20200527161523369"></p>
 <hr>
 <p>上面例子是新旧集合中的节点都是相同的节点的情况下，那如果新集合中有新加入的节点且旧集合存在 需要删除的节点，那么 diff 又是如何对比运作的</p>
 <p>ABCD –&gt; BECA</p>
@@ -656,7 +661,7 @@
 <p>Ps: 不过有可能你的方法里写的比React花费的时间更多</p>
 </blockquote>
 <p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1geqliamkyej30az05kglm.jpg" alt="img"></p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li><p>React的高效得益于VIrtual DOM + React diff的体系。diff算法并非React独创，react只是在传统的diff算法中做了优化。但因为优化，将diff算法的时间复杂度一下从O(n^3) 降到了 O(n)。</p>
 </li>
 <li><p>开发组件时，保持稳定的dom结构会有助于性能的提升。</p>
@@ -673,6 +678,7 @@
 <p><a href="https://www.zhihu.com/question/66851503/answer/246766239" target="_blank" rel="noopener">react的diff 从O(n^3)到 O(n) ，请问 O(n^3) 和O(n) 是怎么算出来？</a></p>
 <p><a href="https://zhuanlan.zhihu.com/p/20346379?refer=purerender" target="_blank" rel="noopener">React 源码剖析系列 － 不可思议的 react diff</a></p>
 <p><a href="https://juejin.im/post/5cb5b4926fb9a068b52fb823" target="_blank" rel="noopener">React diff原理探究以及应用实践</a></p>
+<p><a href="https://juejin.im/post/5cb5b4926fb9a068b52fb823" target="_blank" rel="noopener">React Fiber 原理介绍</a></p>
 
       
     </div>
@@ -743,6 +749,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/05/26/react diff源码揭秘/" rel="prev" title="React diff揭秘">
+                React diff揭秘 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -822,7 +832,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -918,7 +928,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#React-两大特色之React-diff"><span class="nav-number">1.</span> <span class="nav-text">React 两大特色之React diff</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传统的diff算法"><span class="nav-number">1.2.</span> <span class="nav-text">传统的diff算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React的diff策略"><span class="nav-number">1.3.</span> <span class="nav-text">React的diff策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-diff"><span class="nav-number">1.3.1.</span> <span class="nav-text">Tree diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Component-diff"><span class="nav-number">1.3.2.</span> <span class="nav-text">Component diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-diff"><span class="nav-number">1.3.3.</span> <span class="nav-text">Element diff</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染"><span class="nav-number">1.4.</span> <span class="nav-text">渲染</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#合并操作"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">合并操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子树渲染"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">子树渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择子树渲染"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">选择子树渲染</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.4.1.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#React-两大特色之React-diff"><span class="nav-number">1.</span> <span class="nav-text">React 两大特色之React diff</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传统的diff算法"><span class="nav-number">1.2.</span> <span class="nav-text">传统的diff算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#React的diff策略"><span class="nav-number">1.3.</span> <span class="nav-text">React的diff策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tree-diff"><span class="nav-number">1.3.1.</span> <span class="nav-text">Tree diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Component-diff"><span class="nav-number">1.3.2.</span> <span class="nav-text">Component diff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Element-diff"><span class="nav-number">1.3.3.</span> <span class="nav-text">Element diff</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染"><span class="nav-number">1.4.</span> <span class="nav-text">渲染</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#合并操作"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">合并操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#子树渲染"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">子树渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#选择子树渲染"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">选择子树渲染</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.6.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
