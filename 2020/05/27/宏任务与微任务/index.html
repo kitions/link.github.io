@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="javascript,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Filip" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="copy from  wenjie, 分析的很到位，也非常详细。遇到宏任务，先处理宏任务——将宏任务放入Event Queue，然后再处理微任务——将微任务放入Event Queue。">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="宏任务与微任务">
+<meta property="og:url" content="https://kitions.github.io/2020/05/27/宏任务与微任务/index.html">
+<meta property="og:site_name" content="Filip">
+<meta property="og:description" content="copy from  wenjie, 分析的很到位，也非常详细。遇到宏任务，先处理宏任务——将宏任务放入Event Queue，然后再处理微任务——将微任务放入Event Queue。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggabuqi9gbj313s0u0n1x.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggabvgopfkj31470u0jyq.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggabvmfj03j30vw0qo7fl.jpg">
+<meta property="og:image" content="https://bucket-1256530863.cos.ap-shanghai.myqcloud.com/tapd_55367591_1587814302_40.png">
+<meta property="og:updated_time" content="2020-06-30T07:11:34.657Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="宏任务与微任务">
+<meta name="twitter:description" content="copy from  wenjie, 分析的很到位，也非常详细。遇到宏任务，先处理宏任务——将宏任务放入Event Queue，然后再处理微任务——将微任务放入Event Queue。">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggabuqi9gbj313s0u0n1x.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'HYECV8YAZW',
+      apiKey: '8ba59849a179718d8a9c48e0b89c302e',
+      indexName: 'kition',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到该相关内容: ${query}","hits_stats":"${hits} 条记录  耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kitions.github.io/2020/05/27/宏任务与微任务/">
+
+
+
+
+
+  <title>宏任务与微任务 | Filip</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Filip</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kitions.github.io/2020/05/27/宏任务与微任务/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="link">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Filip">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">宏任务与微任务</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-27T20:34:54+08:00">
+                2020-05-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/默认分类/" itemprop="url" rel="index">
+                    <span itemprop="name">默认分类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/05/27/宏任务与微任务/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/05/27/宏任务与微任务/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2020/05/27/宏任务与微任务/" class="leancloud_visitors" data-flag-title="宏任务与微任务">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  copy from  wenjie, 分析的很到位，也非常详细。遇到宏任务，先处理宏任务——将宏任务放入Event Queue，然后再处理微任务——将微任务放入Event Queue。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="宏任务与微任务"><a href="#宏任务与微任务" class="headerlink" title="宏任务与微任务"></a>宏任务与微任务</h1><p>在点击事件冒泡捕获的处理中，通过使用setTimeout 的方式，想要调整某个代码的执行顺序的话，其具体的执行顺序，由一套  <strong>机制</strong>  去实现，这套机制就是通过定义 <strong>宏任务与微任务</strong> 来安排执行顺序。</p>
+<h2 id="异步机制：javascript事件循环"><a href="#异步机制：javascript事件循环" class="headerlink" title="异步机制：javascript事件循环"></a>异步机制：javascript事件循环</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggabuqi9gbj313s0u0n1x.jpg" alt="image-20200507113822255"></p>
+<p><strong>内存堆</strong>：这是内存分配发生的地方。当V8引擎遇到变量声明和函数声明的时候，就把它们存储在堆里面。</p>
+<p><strong>调用栈</strong>：这是你的代码执行时的地方。当引擎遇到像函数调用之类的可执行单元，就会把它们推入调用栈。</p>
+<p>JS单线程，指的是在JS引擎中，解析执行JS代码的调用栈是唯一的，所有的JS代码都在这一个调用栈里按照调用顺序执行，不能同时执行多个函数。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggabvgopfkj31470u0jyq.jpg" alt="image-20200507154251938" style="zoom: 33%;"></p>
+<p><strong>Web APIs</strong>：还有很多引擎之外的 API，我们把这些称为浏览器提供的 Web API，比如说 事件监听函数、DOM、HTTP／AJAX请求、setTimeout等等。</p>
+<p><strong>回调队列</strong>（Event Queue)：按照<strong>先进先出</strong>的顺序存储所有的回调函数。在任意时间，只要Web API容器中的事件达到触发条件，就可以把回调函数添加到回调队列中去。</p>
+<p><strong>事件循环 </strong> (Event Loop)：持续的检测调用栈和回调队列，如果检测到调用栈为空，它就会通知回调队列把队列中的第一个回调函数推入执行栈。</p>
+<h3 id="机制"><a href="#机制" class="headerlink" title="机制"></a>机制</h3><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggabvmfj03j30vw0qo7fl.jpg" alt="tapd_55367591_base64_1587813146_16"></p>
+<p>JS运行时环境的工作机制：</p>
+<ol>
+<li><strong>JS引擎</strong>：（唯一主线程）按顺序解析代码，遇到函数声明，入堆，遇到函数调用，入栈；</li>
+<li>如果是同步函数调用，直接执行得到结果，同步函数弹出栈，继续下一个函数调用；</li>
+<li>如果是异步函数调用，分发给<strong>Web API</strong>（多个辅助线程），进入Event Table并注册函数，异步函数弹出栈，继续下一个函数调用；</li>
+<li>Web API中，异步函数在相应辅助线程中处理完成后，即异步函数达到触发条件了，Event Table就将回调函数推入<strong>回调队列</strong>中。</li>
+<li><strong>Event Loop</strong>：不停地检查主线程的调用栈与回调队列，当调用栈空时，就把回调队列中的第一个任务推入栈中执行，不断循环。</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>下面是一段简易的 <code>ajax</code> 请求代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let data = [];</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">    url:www.javascript.com,</span><br><span class="line">    data:data,</span><br><span class="line">    success:() =&gt; &#123;</span><br><span class="line">        console.log(&apos;发送成功!&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line">console.log(&apos;代码执行结束&apos;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>ajax进入Event Table，注册回调函数 <code>success</code> 。</p>
+</li>
+<li><p>执行 <code>console.log(&#39;代码执行结束&#39;)</code> 。</p>
+</li>
+<li><p>ajax事件完成，回调函数 <code>success</code> 进入Event Queue。</p>
+</li>
+<li><p>主线程从Event Queue读取回调函数 <code>success</code> 并执行。</p>
+</li>
+</ul>
+<p>下面是一段更详细的例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hey, Why am I last?'</span>)</span><br><span class="line">&#125;, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Hello'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayBye</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Goodbye'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sayHi()</span><br><span class="line">sayBye()</span><br></pre></td></tr></table></figure>
+<p>执行过程是这样的：</p>
+<ol>
+<li>JS引擎会检查整段代码的语法错误，如果没有错误，就从头开始深度解析</li>
+<li>首先遇到setTimeout函数调用，把它推入执行栈顶</li>
+<li>解析函数体，发现setTimeout函数是Web API的一种，因此就把它分发到Web API模块然后推出栈</li>
+<li>因为定时器设置了0ms延迟，因此Web API模块立即把它的匿名回调函数推入到回调函数函数队列。事件循环检测执行栈是否是空闲，但是当前栈并不空闲，因为…</li>
+<li>当setTimeout函数一被分发到Web API模块，JS引擎发现了两个函数声明，把它们存储在堆内存里，然后遇到了sayHi函数的调用，就把它推入了栈顶</li>
+<li>sayHi函数调用了console.log函数，因此console.log就被推入了栈顶</li>
+<li>JS引擎开始解析console.log的函数体，它接收了一个消息去打印‘Hello’，然后被弹出栈</li>
+<li>JS引擎返回到函数sayHi的执行，遇到函数的结束符号}之后，把sayHi弹出栈</li>
+<li>sayHi函数一出栈，紧接着sayBye函数被调用，它就被推入栈顶，被解析，调用console.log，把console.log推入栈顶，打印一条消息，弹出栈。然后sayBye函数弹出栈</li>
+<li>事件循环检测到执行栈终于空闲了，通知回调队列，然后回调队列把其中的匿名函数推入执行栈</li>
+<li>匿名函数（就是setTimeout的回调函数）被解析，调用console.log，console.log推入栈顶</li>
+<li>console.log执行完毕、再出栈</li>
+<li>匿名函数再被推出栈，程序结束</li>
+</ol>
+<h2 id="另一个异步机制：宏任务与微任务"><a href="#另一个异步机制：宏任务与微任务" class="headerlink" title="另一个异步机制：宏任务与微任务"></a>另一个异步机制：宏任务与微任务</h2><p>但是，JS异步还有一个机制，就是遇到宏任务，先处理宏任务——将宏任务放入Event Queue，然后再处理微任务——将微任务放入Event Queue。<br>注意，这里两个Event Queue不是同一个queue。<br>当js引擎的主线程执行栈为空时，它会优先从微任务queue里遍历注册的回调函数并一一执行，然后再从宏任务的queue里遍历执行注册的回调函数，如下图：</p>
+<p><img src="https://bucket-1256530863.cos.ap-shanghai.myqcloud.com/tapd_55367591_1587814302_40.png" alt="tapd_55367591_1587814302_40" style="zoom: 50%;"></p>
+<ul>
+<li><p><strong>Web API</strong>中，异步函数在相应辅助线程中处理完成后，即异步函数达到触发条件了（比如setTimeout设置的10s后），如果异步函数是宏任务，则入<strong>宏任务消息队列</strong>，如果是微任务，则入<strong>微任务消息队列</strong>；</p>
+</li>
+<li><p><strong>Event Loop</strong>不停地检查主线程的调用栈与回调队列，当调用栈空时，就把<strong>微任务</strong>消息队列中的第一个任务推入栈中执行，执行完成后，再取第二个微任务，直到微任务消息队列为空；然后 去宏任务消息队列中取第一个宏任务推入栈中执行，当该宏任务执行完成后，在下一个宏任务执行前，再依次取出微任务消息队列中的所有微任务入栈执行。</p>
+</li>
+</ul>
+<p>上述过程不断循环，每当微任务队列清空，可作为本轮事件循环的结束。</p>
+<p><strong>宏任务</strong> (macrotask/task)</p>
+<p>包括：</p>
+<ul>
+<li>I/O（例如点击一次<code>button</code>，上传一个文件，与程序产生交互的这些都可以称之为<code>I/O</code>）</li>
+<li>setTimeout</li>
+<li>setInterval</li>
+<li>setImmediate（仅Node）</li>
+<li>requestAnimationFrame（仅浏览器）</li>
+<li>xhr</li>
+<li>postMessage</li>
+<li>MessageChannel</li>
+</ul>
+<p>对于 <code>setInterval(fn,ms)</code> 来说，不是每过 <code>ms</code> 秒会执行一次 <code>fn</code> ，而是每过 <code>ms</code> 秒，会有 <code>fn</code> 进入Event Queue。<br>一旦 <code>setInterval</code> 的回调函数 <code>fn</code> 执行时间超过了延迟时间 <code>ms</code> ，那么就完全看不出来有时间间隔了。</p>
+<p><em>P.S. 有些地方会列出来<code>UI Rendering</code>，说这个也是宏任务，可是在读了<a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model" target="_blank" rel="noopener">HTML规范文档</a>以后，发现这很显然是和微任务平行的一个操作步骤</em></p>
+<p><em>P.S. <code>requestAnimationFrame</code>在<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/requestAnimationFrame" target="_blank" rel="noopener">MDN的定义</a>为，下次页面重绘前所执行的操作，而重绘也是作为宏任务的一个步骤来存在的，且该步骤晚于微任务的执行</em></p>
+<p><strong>微任务</strong> (microtask/job)</p>
+<p>包括：</p>
+<ul>
+<li>Promise.then catch finally</li>
+<li>process.nextTick（仅Node）</li>
+<li>MutationObserver（仅浏览器）</li>
+</ul>
+<p><strong>P.S.</strong> new Promise在实例化的过程中所执行的代码都是同步进行的，而then中注册的回调才是异步执行的。 async/await底层是基于Promise封装的，所以await前面的代码相当于new Promise，是同步进行的，await后面的代码相当于then，才是异步进行的。</p>
+<p><strong>P.S</strong>.  在<a href="https://promisesaplus.com/#notes" target="_blank" rel="noopener">Promise/A+的规范</a>中，<code>Promise</code>的实现可以是微任务，也可以是宏任务，但是普遍的共识表示(至少<code>Chrome</code>是这么做的)，<code>Promise</code>应该是属于微任务阵营的*</p>
+<h3 id="例子-1"><a href="#例子-1" class="headerlink" title="例子"></a>例子</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">  resolve()</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">1</span>)</span><br><span class="line">&#125;).then(<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">3</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>最终输出结果为：1 &gt; 2 &gt; 3 &gt; 4</p>
+<p>再来看一个嵌套的示例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Promise1'</span>) </span><br><span class="line">  <span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Promise2'</span>)    </span><br><span class="line">  &#125;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'setTimeout1'</span>)</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'setTimeout2'</span>)</span><br><span class="line">  &#125;,<span class="number">0</span>)</span><br><span class="line">&#125;,<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>最后输出结果是Promise1 &gt; setTimeout1 &gt; Promise2 &gt; setTimeout2</p>
+<p>Promise1</p>
+<h2 id="Node-环境"><a href="#Node-环境" class="headerlink" title="Node 环境"></a>Node 环境</h2><h3 id="Node中事件循环"><a href="#Node中事件循环" class="headerlink" title="Node中事件循环"></a>Node中事件循环</h3><p> Node用V8作为js的解析引擎，而I/O处理方面使用了自己设计的libuv，libuv是一个基于事件驱动的跨平台抽象层，封装了不同操作系统一些底层特性，对外提供统一的API，事件循环机制也是它里面的实现。 Node也是单线程，但是在处理Event Loop上与浏览器稍微有些不同。</p>
+<p>在node里，有一些常用的异步API，这里简单介绍下他们：</p>
+<h4 id="setImmediate"><a href="#setImmediate" class="headerlink" title="setImmediate()"></a><strong>setImmediate()</strong></h4><p><code>setImmediate()</code>在一次Event Loop执行完毕后立刻调用。 </p>
+<p><code>setTimeout</code>则是通过计算一个延迟时间后进行执行。</p>
+<p>所以如下示例，不能保证输出顺序。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>))</span><br><span class="line">setImmediate(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'setImmediate'</span>))</span><br></pre></td></tr></table></figure>
+<p>而如果是下面这样，则一定是setImmediate先输出。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'setTimeout'</span>), <span class="number">20</span>)</span><br><span class="line">setImmediate(<span class="function"><span class="params">_</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">'setImmediate'</span>))</span><br></pre></td></tr></table></figure>
+<h4 id="process-nextTick"><a href="#process-nextTick" class="headerlink" title="process.nextTick()"></a><strong>process.nextTick()</strong></h4><p><code>process.nextTick()</code>会将回调函数放入队列中,在下一轮Tick时取出执行</p>
+<p>这是因为 ，process.nextTick()中的回调函数执行的优先级要高于setImmediate()。<br>Node里，事件循环对观察者的检查是有先后顺序的,process.nextTick()属于idle观察者, setImmediate()属于check观察者。</p>
+<p>process.nextTick和setImmediate的一个重要区别：多个process.nextTick语句总是在当前”执行栈”一次执行完，多个setImmediate可能则需要多次loop才能执行完。 事实上，这正是Node.js 10.0版添加setImmediate方法的原因，否则像下面这样的递归调用process.nextTick，将会没完没了，主线程根本不会去读取”事件队列”！</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">process.nextTick(<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  process.nextTick(foo);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://juejin.im/post/5e972f3c518825739d40874a" target="_blank" rel="noopener">https://juejin.im/post/5e972f3c518825739d40874a</a></p>
+<p><a href="https://juejin.im/post/5e9d0b48f265da47ff7cd9e6" target="_blank" rel="noopener">JS核心理论之《运行机制与宏任务、微任务》</a></p>
+<p><a href="https://github.com/benyasin/js-core-theory/blob/master/JS引擎、运行时与调用椎栈.md" target="_blank" rel="noopener">JS核心理论之《JS引擎、运行时与调用椎栈》</a></p>
+<h2 id="From"><a href="#From" class="headerlink" title="From"></a>From</h2><p><a href="http://mythcwj.com/" target="_blank" rel="noopener">copy from  wenjie</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>感谢你的打赏哦！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="link 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="link 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/26/react diff源码揭秘/" rel="next" title="React diff揭秘">
+                <i class="fa fa-chevron-left"></i> React diff揭秘
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">link</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/kitions" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:nsplknsplk@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/nsplknsplk" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/your-user-name" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/your-user-name" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#宏任务与微任务"><span class="nav-number">1.</span> <span class="nav-text">宏任务与微任务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#异步机制：javascript事件循环"><span class="nav-number">1.1.</span> <span class="nav-text">异步机制：javascript事件循环</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#机制"><span class="nav-number">1.1.2.</span> <span class="nav-text">机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#例子"><span class="nav-number">1.1.3.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#另一个异步机制：宏任务与微任务"><span class="nav-number">1.2.</span> <span class="nav-text">另一个异步机制：宏任务与微任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#例子-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">例子</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Node-环境"><span class="nav-number">1.3.</span> <span class="nav-text">Node 环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Node中事件循环"><span class="nav-number">1.3.1.</span> <span class="nav-text">Node中事件循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#setImmediate"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">setImmediate()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#process-nextTick"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">process.nextTick()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.4.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#From"><span class="nav-number">1.5.</span> <span class="nav-text">From</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">link</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'ohCdgFTxBCqGAWc738RfOoS4-gzGzoHsz',
+        appKey: 'ePCpct3dlRSGr3dY2Og1UQSY',
+        placeholder: '来来来  输入你的评论吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ohCdgFTxBCqGAWc738RfOoS4-gzGzoHsz", "ePCpct3dlRSGr3dY2Og1UQSY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
