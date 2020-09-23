@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://kitions.github.io/"/>
-  <updated>2020-07-31T03:55:54.231Z</updated>
+  <updated>2020-09-23T03:57:44.613Z</updated>
   <id>https://kitions.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="https://kitions.github.io/2020/08/25/%E5%87%BD%E6%95%B0%E7%9A%84%E6%9F%AF%E9%87%8C%E5%8C%96/"/>
+    <id>https://kitions.github.io/2020/08/25/函数的柯里化/</id>
+    <published>2020-08-25T02:19:15.904Z</published>
+    <updated>2020-09-23T03:57:44.613Z</updated>
+    
+    <content type="html"><![CDATA[<p>-–</p><p>title:  函数的柯里化简单了解  <em>#文章页面上的显示名称，一般是中文</em></p><p>categories: 默认分类 <em>#分类</em></p><p>date: 2020-08-25 19:41:44</p><p>tags:  <em>#文章标签，可空，多标签请用格式，注意:后面有个空格</em></p><p>description: 接受多个参数的函数转换成接受单一参数的函数的操作。通俗理解为：只传递给函数的一部分参数来调用它，让它返回一个新函数去处理剩下的参数。</p><p>-–</p><h1 id="函数的柯里化"><a href="#函数的柯里化" class="headerlink" title="函数的柯里化"></a>函数的柯里化</h1><h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><p>接受多个参数的函数转换成接受单一参数的函数的操作。通俗理解为：只传递给函数的一部分参数来调用它，让它返回一个新函数去处理剩下的参数。</p><blockquote><p>测试可用quokka.js（免费版即可）  vscode的插件</p></blockquote><h2 id="二、参数定长柯里化"><a href="#二、参数定长柯里化" class="headerlink" title="二、参数定长柯里化"></a>二、参数定长柯里化</h2><h3 id="2-1-例一"><a href="#2-1-例一" class="headerlink" title="2.1 例一"></a>2.1 例一</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> add = <span class="function">(<span class="params">...args</span>) =&gt;</span> args.reduce(<span class="function">(<span class="params">a, b</span>) =&gt;</span> a + b);</span><br><span class="line"></span><br><span class="line">add(<span class="number">1</span>, <span class="number">2</span>) <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> sum = currying(add);</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> addCurryOne = sum(<span class="number">1</span>);</span><br><span class="line">addCurryOne(<span class="number">2</span>) <span class="comment">// 3</span></span><br><span class="line">addCurryOne(<span class="number">3</span>) <span class="comment">// 4</span></span><br></pre></td></tr></table></figure><p>用闭包把传入参数保存起来，当传入参数的数量足够执行函数时，就开始执行函数</p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">currying</span>(<span class="params">func</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> args = [];</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">result</span>(<span class="params">...rest</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (rest.length === <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span> func(...args);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          args.push(...rest);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gi35mxxb8cj30eo0ga0tz.jpg" alt="image-20200825165013800"></p><h3 id="2-2-例二"><a href="#2-2-例二" class="headerlink" title="2.2 例二"></a>2.2 例二</h3><p>柯里化是在一个函数的基础上变换，得到一个新的预设了参数的函数。最后在调用新函数时候，实际上还是会调用柯里化前的原函数。</p><p>而且柯里化得到的新函数可以继续被柯里化，有点递归的感觉，不对不是递归，有点套娃的感觉</p><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gi49mnwbg6j30tk0fp42s.jpg" alt="image-20200826155358746"></p><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">adds</span>(<span class="params">a, b, c</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a + b + c</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">currying</span>(<span class="params">fn, length</span>) </span>&#123;</span><br><span class="line">    length = length || fn.length; <span class="comment">// 第一次调用获取函数 fn 参数的长度，后续调用获取 fn 剩余参数的长度</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">arguments</span> <span class="comment">//将类数组对象转换成数组</span></span><br><span class="line">        <span class="keyword">var</span> args = [].slice.call(<span class="built_in">arguments</span>) <span class="comment">// currying返回函数接受的参数</span></span><br><span class="line">        fn</span><br><span class="line">        args</span><br><span class="line">        <span class="built_in">console</span>.log(args.length)</span><br><span class="line">        length</span><br><span class="line">        <span class="keyword">if</span> (args.length &lt; length) &#123; <span class="comment">// 判断参数的长度是否小于 fn 剩余参数需要接收的长度</span></span><br><span class="line">            <span class="keyword">return</span> currying(fn.bind(<span class="keyword">this</span>, ...args), length - args.length) <span class="comment">// 递归 currying 函数，新的 fn 为 bind 返回的新函数（bind 绑定了 ...args 参数，未执行），新的 length 为 fn 剩余参数的长度</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(fn)</span><br><span class="line">            <span class="built_in">console</span>.log(...args)</span><br><span class="line">            <span class="keyword">return</span> fn.call(<span class="keyword">this</span>, ...args) <span class="comment">// 执行 fn 函数，传入新函数的参数</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> addCurry = currying(adds);</span><br><span class="line"><span class="built_in">console</span>.log(addCurry(<span class="number">2</span>)(<span class="number">3</span>)(<span class="number">4</span>)) <span class="comment">// 9</span></span><br><span class="line"><span class="comment">// console.log(addCurry(2, 3)(4))  // 9</span></span><br><span class="line"><span class="comment">// console.log(addCurry(2, 3, 4))  // 9</span></span><br><span class="line"><span class="comment">// addCurry(2)(3, 4) // 9</span></span><br></pre></td></tr></table></figure><p>实现原理都是「用闭包把传入参数保存起来，当传入参数的数量足够执行函数时，就开始执行函数」</p><h2 id="三、实际使用"><a href="#三、实际使用" class="headerlink" title="三、实际使用"></a>三、实际使用</h2><h3 id="1-bind"><a href="#1-bind" class="headerlink" title="1.bind"></a>1.bind</h3><p>MDN的解释</p><blockquote><p><code>Function.prototype.bind()</code>方法创建一个新的函数，在<code>bind()</code>被调用时，这个新函数的<code>this</code>被指定为<code>bind</code>的第一个参数，而其余参数会被指定为新函数的参数，供调用时使用</p></blockquote><p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gi5i8qlgwqj30eg0eltb4.jpg" alt="image-20200827173736428"></p><h2 id="总结"><a href="#总结" class="headerlink" title="总结!"></a>总结!</h2><p>柯里化属于函数式编程思想。柯里化时只是返回一个预置参数的新函数，没有立刻执行，实际上在满足条件后才会执行。不污染原函数。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;-–&lt;/p&gt;
+&lt;p&gt;title:  函数的柯里化简单了解  &lt;em&gt;#文章页面上的显示名称，一般是中文&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;categories: 默认分类 &lt;em&gt;#分类&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;date: 2020-08-25 19:41:44&lt;/p&gt;
+&lt;p&gt;tag
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>浏览器事件全屏</title>
@@ -426,28 +451,6 @@
     <summary type="html">
     
       go 坑之并发访问map,并发的对一个map进行读写是有问题的，主要是写
-    
-    </summary>
-    
-      <category term="默认分类" scheme="https://kitions.github.io/categories/%E9%BB%98%E8%AE%A4%E5%88%86%E7%B1%BB/"/>
-    
-    
-      <category term="go" scheme="https://kitions.github.io/tags/go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>go 之grpc 获取来的数据 转为json</title>
-    <link href="https://kitions.github.io/2019/02/16/grpc%20%E8%8E%B7%E5%8F%96%E6%9D%A5%E7%9A%84%E6%95%B0%E6%8D%AE%20%E8%BD%AC%E4%B8%BAjson/"/>
-    <id>https://kitions.github.io/2019/02/16/grpc 获取来的数据 转为json/</id>
-    <published>2019-02-16T06:53:22.000Z</published>
-    <updated>2019-03-05T08:26:55.000Z</updated>
-    
-    <content type="html"><![CDATA[<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// grpc 获取来的数据 转为json</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SmartPrint</span><span class="params">(xm <span class="keyword">interface</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">js, err := json.Marshal(xm)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">fmt.Println(err)</span><br><span class="line"><span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(<span class="keyword">string</span>(js))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      SmartPrint()方法
     
     </summary>
     
