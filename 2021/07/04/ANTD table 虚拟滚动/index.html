@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="React,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Filip" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Antd Table虚拟滚动完整实现，包含搜索，排序">
+<meta name="keywords" content="React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ANTD table 虚拟滚动">
+<meta property="og:url" content="https://kitions.github.io/2021/07/04/ANTD table 虚拟滚动/index.html">
+<meta property="og:site_name" content="Filip">
+<meta property="og:description" content="Antd Table虚拟滚动完整实现，包含搜索，排序">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-07-05T02:41:12.706Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ANTD table 虚拟滚动">
+<meta name="twitter:description" content="Antd Table虚拟滚动完整实现，包含搜索，排序">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: 'HYECV8YAZW',
+      apiKey: '8ba59849a179718d8a9c48e0b89c302e',
+      indexName: 'kition',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"输入关键字","hits_empty":"没有找到该相关内容: ${query}","hits_stats":"${hits} 条记录  耗时 ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://kitions.github.io/2021/07/04/ANTD table 虚拟滚动/">
+
+
+
+
+
+  <title>ANTD table 虚拟滚动 | Filip</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Filip</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
+
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
+
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://kitions.github.io/2021/07/04/ANTD table 虚拟滚动/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="link">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Filip">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">ANTD table 虚拟滚动</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-07-04T10:38:31+08:00">
+                2021-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/默认分类/" itemprop="url" rel="index">
+                    <span itemprop="name">默认分类</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/07/04/ANTD table 虚拟滚动/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/07/04/ANTD table 虚拟滚动/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2021/07/04/ANTD table 虚拟滚动/" class="leancloud_visitors" data-flag-title="ANTD table 虚拟滚动">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  Antd Table虚拟滚动完整实现，包含搜索，排序
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ANTD-table-虚拟滚动"><a href="#ANTD-table-虚拟滚动" class="headerlink" title="ANTD table 虚拟滚动"></a>ANTD table 虚拟滚动</h1><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Antd团队 2016 年就要注意到 antd 长列表项目的性能问题了，当时让靠分页来解决,问题是很多需求是要单屏展示的，团队也很清楚用虚拟滚动可以有效地解决这个问题。</p>
+<p>使用虚拟滚动目的是实现万级以上数据的高性能表格。</p>
+<p>简单粗暴直接上代码</p>
+<h3 id="搜索方法"><a href="#搜索方法" class="headerlink" title="搜索方法"></a>搜索方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">const inputRef = useRef&lt;Input&gt;(null);</span><br><span class="line"></span><br><span class="line">// 搜索</span><br><span class="line">const getColumnSearchProps = (dataIndex: any, title: string) =&gt; (&#123;</span><br><span class="line">	filterDropdown: (&#123;</span><br><span class="line">		setSelectedKeys,</span><br><span class="line">		selectedKeys,</span><br><span class="line">		confirm,</span><br><span class="line">		clearFilters</span><br><span class="line">	&#125;: any) =&gt; (</span><br><span class="line">		&lt;div style=&#123;&#123; padding: 8 &#125;&#125;&gt;</span><br><span class="line">			&lt;Input</span><br><span class="line">				ref=&#123;inputRef&#125;</span><br><span class="line">				placeholder=&#123;`搜索$&#123;title&#125;`&#125;</span><br><span class="line">				value=&#123;selectedKeys[0]&#125;</span><br><span class="line">				onChange=&#123;e =&gt;</span><br><span class="line">					setSelectedKeys(e.target.value ? [e.target.value] : [])</span><br><span class="line">				&#125;</span><br><span class="line">				onPressEnter=&#123;() =&gt;</span><br><span class="line">					handleSearch(selectedKeys, confirm, dataIndex)</span><br><span class="line">				&#125;</span><br><span class="line">				style=&#123;&#123; width: 188, marginBottom: 8, display: &apos;block&apos; &#125;&#125;</span><br><span class="line">			/&gt;</span><br><span class="line">			&lt;Button</span><br><span class="line">				type=&quot;primary&quot;</span><br><span class="line">				onClick=&#123;() =&gt;</span><br><span class="line">					handleSearch(selectedKeys, confirm, dataIndex)</span><br><span class="line">				&#125;</span><br><span class="line">				icon=&#123;&lt;SearchOutlined /&gt;&#125;</span><br><span class="line">				size=&quot;small&quot;</span><br><span class="line">				style=&#123;&#123; width: 90, marginRight: 8 &#125;&#125;</span><br><span class="line">			&gt;</span><br><span class="line">				搜索</span><br><span class="line">			&lt;/Button&gt;</span><br><span class="line">			&lt;Button</span><br><span class="line">				onClick=&#123;() =&gt; handleReset(clearFilters)&#125;</span><br><span class="line">				size=&quot;small&quot;</span><br><span class="line">				style=&#123;&#123; width: 90 &#125;&#125;</span><br><span class="line">			&gt;</span><br><span class="line">				重置</span><br><span class="line">			&lt;/Button&gt;</span><br><span class="line">		&lt;/div&gt;</span><br><span class="line">	),</span><br><span class="line">	filterIcon: (filtered: any) =&gt; (</span><br><span class="line">		&lt;SearchOutlined</span><br><span class="line">			style=&#123;&#123; color: filtered ? &apos;#1890ff&apos; : undefined &#125;&#125;</span><br><span class="line">		/&gt;</span><br><span class="line">	),</span><br><span class="line">	onFilter: (value: any, record: any) =&gt;</span><br><span class="line">		record[dataIndex]</span><br><span class="line">			? record[dataIndex]</span><br><span class="line">					.toString()</span><br><span class="line">					.toLowerCase()</span><br><span class="line">					.includes(value.toLowerCase())</span><br><span class="line">			: &apos;&apos;,</span><br><span class="line">	onFilterDropdownVisibleChange: (visible: any) =&gt; &#123;</span><br><span class="line">		if (visible) &#123;</span><br><span class="line">			setTimeout(() =&gt; inputRef?.current?.select());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">const handleSearch = (</span><br><span class="line">	_selectedKeys: any[],</span><br><span class="line">	confirm: () =&gt; void,</span><br><span class="line">	_dataIndex: any</span><br><span class="line">) =&gt; &#123;</span><br><span class="line">	confirm();</span><br><span class="line">&#125;;</span><br><span class="line">const handleReset = (clearFilters: () =&gt; void) =&gt; &#123;</span><br><span class="line">	clearFilters();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="排序方法"><a href="#排序方法" class="headerlink" title="排序方法"></a>排序方法</h3><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// columns处理函数包含排序sorter</span></span><br><span class="line">	<span class="keyword">const</span> formatColumns = <span class="function">(<span class="params">fields: DataCompareField[]</span>) =&gt;</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> fields.map(<span class="function">(<span class="params">field</span>) =&gt;</span> &#123;</span><br><span class="line">			<span class="keyword">const</span> dataIndex = field.item_id ? field.item_id : <span class="string">'日期'</span>;</span><br><span class="line">			<span class="keyword">return</span> &#123;</span><br><span class="line">				title: <span class="string">`<span class="subst">$&#123;field.item_name&#125;</span><span class="subst">$&#123;field.unit &amp;&amp; `（$&#123;field.unit&#125;</span>）`</span>&#125;<span class="string">`,</span></span><br><span class="line"><span class="string">				dataIndex: getKey(field), //特殊列item_id为空</span></span><br><span class="line"><span class="string">				type: field.value_type,</span></span><br><span class="line"><span class="string">				width: 190,</span></span><br><span class="line"><span class="string">				showSorterTooltip: false,</span></span><br><span class="line"><span class="string">				sorter: (a: any, b: any) =&gt; &#123;</span></span><br><span class="line"><span class="string">					if (</span></span><br><span class="line"><span class="string">						field.value_type == 'integer' ||</span></span><br><span class="line"><span class="string">						field.value_type == 'float'</span></span><br><span class="line"><span class="string">					) &#123;</span></span><br><span class="line"><span class="string">						return (</span></span><br><span class="line"><span class="string">							compareColumn(a[dataIndex] || 0) -</span></span><br><span class="line"><span class="string">							compareColumn(b[dataIndex] || 0)</span></span><br><span class="line"><span class="string">						);</span></span><br><span class="line"><span class="string">					&#125; else &#123;</span></span><br><span class="line"><span class="string">						return String(a[dataIndex]).localeCompare(b[dataIndex]);</span></span><br><span class="line"><span class="string">					&#125;</span></span><br><span class="line"><span class="string">				&#125;,</span></span><br><span class="line"><span class="string">				...getColumnSearchProps(dataIndex, field.item_name)</span></span><br><span class="line"><span class="string">			&#125;</span></span><br><span class="line"><span class="string">		&#125;)</span></span><br><span class="line"><span class="string">	&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">  const compareColumn = (text: string | number) =&gt; &#123;</span></span><br><span class="line"><span class="string">    if (text == '-') text = 0;</span></span><br><span class="line"><span class="string">    return Number(text.toString().replace(',', ''));</span></span><br><span class="line"><span class="string">  &#125;;</span></span><br></pre></td></tr></table></figure>
+<h3 id="坑点"><a href="#坑点" class="headerlink" title="坑点"></a>坑点</h3><p>最最关键的，官方文档未定义一个方法，导致点击排序或者搜索方法会报scrollTop of undefined</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> [connectObject] = useState&lt;any&gt;<span class="function">(<span class="params">(</span>) =&gt;</span> &#123;</span><br><span class="line">		<span class="keyword">const</span> obj = &#123;&#125;</span><br><span class="line">		<span class="built_in">Object</span>.defineProperty(obj, <span class="string">"scrollLeft"</span>, &#123;</span><br><span class="line">			get: <span class="function"><span class="params">()</span> =&gt;</span> <span class="literal">null</span>,</span><br><span class="line">			set: <span class="function">(<span class="params">scrollLeft: number</span>) =&gt;</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> (gridRef.current) &#123;</span><br><span class="line">					gridRef.current.scrollTo(&#123; scrollLeft &#125;)</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;)</span><br><span class="line">  	<span class="comment">// 就是这个   可看issues  </span></span><br><span class="line">    <span class="comment">// https://github.com/ant-design/ant-design/issues/24383</span></span><br><span class="line">		<span class="built_in">Object</span>.defineProperty(obj, <span class="string">"ownerDocument"</span>, &#123;</span><br><span class="line">			get: <span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">document</span>.body.ownerDocument</span><br><span class="line">		&#125;);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> obj</span><br><span class="line">	&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="完整的VirtualTable组件"><a href="#完整的VirtualTable组件" class="headerlink" title="完整的VirtualTable组件"></a>完整的VirtualTable组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br></pre></td><td class="code"><pre><span class="line">// 完整的VirtualTable</span><br><span class="line"></span><br><span class="line">import React, &#123; FC, useEffect, useRef, useState &#125; from &quot;react&quot;</span><br><span class="line">import &#123; Table, Tooltip &#125; from &quot;antd&quot;</span><br><span class="line">import ResizeObserver from &quot;rc-resize-observer&quot;</span><br><span class="line">import &#123; VariableSizeGrid as Grid &#125; from &quot;react-window&quot;</span><br><span class="line">import &#123; TableProps &#125; from &quot;antd/lib/table&quot;</span><br><span class="line"></span><br><span class="line">import &#123; strLen &#125; from &quot;@Common/utils/util&quot;</span><br><span class="line"></span><br><span class="line">import Style from &quot;./index.module.scss&quot;</span><br><span class="line"></span><br><span class="line">interface IProps &#123;</span><br><span class="line">	data: &#123;</span><br><span class="line">		[key: string]: string | number | null</span><br><span class="line">	&#125;[]</span><br><span class="line">	columns: IColumn[]</span><br><span class="line">	c_size: &#123;</span><br><span class="line">		y: number</span><br><span class="line">		x: number | undefined</span><br><span class="line">	&#125;</span><br><span class="line">	isSort?: boolean</span><br><span class="line">&#125;</span><br><span class="line">interface TConfig &#123;</span><br><span class="line">	LineHeight: number</span><br><span class="line">	AntdThPadding: number</span><br><span class="line">	AntdThVPadding: number</span><br><span class="line">	AntdTdPadding: number</span><br><span class="line">	AntdRowHeight: number</span><br><span class="line">	AntdFontSize: number</span><br><span class="line">	ThtdBorder: number</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">interface IColumn &#123;</span><br><span class="line">	title: string</span><br><span class="line">	dataIndex: string</span><br><span class="line">	width?: number</span><br><span class="line">	sort?: (a: any, b: any) =&gt; any</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const VirtualTable: FC&lt;IProps &amp; Partial&lt;TConfig&gt; &amp; TableProps&lt;any&gt;&gt; = (props) =&gt; &#123;</span><br><span class="line">	const &#123; columns, c_size, data, isSort &#125; = props</span><br><span class="line">	let TConfig: TConfig = &#123;</span><br><span class="line">		LineHeight: props.LineHeight || 30,</span><br><span class="line">		AntdFontSize: props.AntdFontSize || 14,</span><br><span class="line">		AntdRowHeight: props.AntdRowHeight || 40,</span><br><span class="line">		AntdThPadding: props.AntdThPadding || 10 * 2,</span><br><span class="line">		AntdTdPadding: props.AntdTdPadding || 10 * 2,</span><br><span class="line">		AntdThVPadding: props.AntdThVPadding || 5 * 2,</span><br><span class="line">		ThtdBorder: props.ThtdBorder || 1,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	const gridRef = useRef&lt;any&gt;()</span><br><span class="line"></span><br><span class="line">	const [tableWidth, setTableWidth] = useState(0)</span><br><span class="line">	const [connectObject] = useState&lt;any&gt;(() =&gt; &#123;</span><br><span class="line">		const obj = &#123;&#125;</span><br><span class="line">		Object.defineProperty(obj, &quot;scrollLeft&quot;, &#123;</span><br><span class="line">			get: () =&gt; null,</span><br><span class="line">			set: (scrollLeft: number) =&gt; &#123;</span><br><span class="line">				if (gridRef.current) &#123;</span><br><span class="line">					gridRef.current.scrollTo(&#123; scrollLeft &#125;)</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;)</span><br><span class="line">		Object.defineProperty(obj, &quot;ownerDocument&quot;, &#123;</span><br><span class="line">			get: () =&gt; document.body.ownerDocument</span><br><span class="line">		&#125;);</span><br><span class="line"></span><br><span class="line">		return obj</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	// 合并后的列数</span><br><span class="line">	const mergedColumns = ((columns: IColumn[]) =&gt; &#123;</span><br><span class="line">		const widthColumnCount = columns.filter((&#123; width &#125;) =&gt; !width).length</span><br><span class="line">		return columns.map((column) =&gt; &#123;</span><br><span class="line">			if (column.width) &#123;</span><br><span class="line">				return column</span><br><span class="line">			&#125;</span><br><span class="line">			return &#123;</span><br><span class="line">				...column,</span><br><span class="line">				width: Math.ceil(tableWidth / widthColumnCount),</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)(columns)</span><br><span class="line">  </span><br><span class="line">  const strLen = (str: string) =&gt; &#123;</span><br><span class="line">    let len = 0</span><br><span class="line">    for (let i = 0; i &lt; str.length; i++) &#123;</span><br><span class="line">      const c = str.charCodeAt(i)</span><br><span class="line">      //单字节加1</span><br><span class="line">      if ((c &gt;= 0x0001 &amp;&amp; c &lt;= 0x007e) || (0xff60 &lt;= c &amp;&amp; c &lt;= 0xff9f)) &#123;</span><br><span class="line">        len++</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        len += 2</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return len</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">	// 标题最长长度</span><br><span class="line">	const getMaxHeightTh = (columns: IColumn[], scrollbarSize: number) =&gt; &#123;</span><br><span class="line">		let _max = &#123;</span><br><span class="line">			index: 0,</span><br><span class="line">			len: 0,</span><br><span class="line">			width: 0,</span><br><span class="line">			ratio: 0,</span><br><span class="line">		&#125;</span><br><span class="line">		columns.map((column, i) =&gt; &#123;</span><br><span class="line">			const titleLen = strLen(column.title)</span><br><span class="line">			if (column.width) &#123;</span><br><span class="line">				const columnLen = i !== columns.length - 1 ? column.width : column.width - scrollbarSize</span><br><span class="line">				const ratio = titleLen / columnLen</span><br><span class="line">				if (ratio &gt; _max.ratio) &#123;</span><br><span class="line">					_max.ratio = ratio</span><br><span class="line">					_max.index = i</span><br><span class="line">					_max.len = titleLen</span><br><span class="line">					_max.width = columnLen</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;)</span><br><span class="line">		return _max</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 滚动条高度</span><br><span class="line">	const getScrollY = (containerHeight: number, scrollbarSize: number) =&gt; &#123;</span><br><span class="line">		const maxHeightTh = getMaxHeightTh(mergedColumns, scrollbarSize)</span><br><span class="line">		const containChars = Math.floor((maxHeightTh.width - TConfig.AntdThPadding - TConfig.ThtdBorder) / TConfig.AntdFontSize) * 2</span><br><span class="line">		const titleHeight = TConfig.AntdThVPadding + TConfig.LineHeight * Math.ceil(maxHeightTh.len / containChars) //表头基础高度x px,超过y个纯字符换行，每换行增加z px</span><br><span class="line">		let columnsBoxHeight = containerHeight - titleHeight //最小高度最大值；即容器高度</span><br><span class="line">		if(isSort) columnsBoxHeight -= 30 </span><br><span class="line">		return columnsBoxHeight</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	const resetVirtualGrid = () =&gt; &#123;</span><br><span class="line">		if(gridRef.current)&#123;</span><br><span class="line">			gridRef.current.resetAfterIndices(&#123;</span><br><span class="line">				columnIndex: 0,</span><br><span class="line">				shouldForceUpdate: true, //TODO</span><br><span class="line">			&#125;)</span><br><span class="line">		&#125;</span><br><span class="line">			</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// 调整大小时会频繁渲染，可能有优化空间</span><br><span class="line">	const renderVirtualList = (rawData: any[], &#123; scrollbarSize, ref, onScroll &#125;: any) =&gt; &#123;</span><br><span class="line">		ref.current = connectObject</span><br><span class="line">		const scrollY = getScrollY(c_size.y, scrollbarSize)</span><br><span class="line">		const columnsBoxHeight = scrollY</span><br><span class="line">		const columnsRealHeight = rawData.length * TConfig.AntdRowHeight //data所占高度；即列实高</span><br><span class="line">		const minHeight = columnsRealHeight &gt; columnsBoxHeight ? columnsBoxHeight : columnsRealHeight</span><br><span class="line">		const maxHeight = columnsRealHeight &gt; columnsBoxHeight ? columnsBoxHeight : columnsRealHeight + scrollbarSize</span><br><span class="line"></span><br><span class="line">		return !!rawData.length ? (</span><br><span class="line">			&lt;Grid</span><br><span class="line">				ref=&#123;gridRef&#125;</span><br><span class="line">				className=&quot;gridContent&quot;</span><br><span class="line">				columnCount=&#123;mergedColumns.length&#125;</span><br><span class="line">				columnWidth=&#123;(index) =&gt; &#123;</span><br><span class="line">					const &#123; width &#125; = mergedColumns[index]</span><br><span class="line">					return columnsRealHeight &gt; columnsBoxHeight &amp;&amp; </span><br><span class="line">					index === mergedColumns.length - 1 </span><br><span class="line">					? width! - scrollbarSize </span><br><span class="line">					: width!</span><br><span class="line">				&#125;&#125;</span><br><span class="line">				width=&#123;tableWidth&#125;</span><br><span class="line">				rowCount=&#123;rawData.length&#125;</span><br><span class="line">				rowHeight=&#123;() =&gt; TConfig.AntdRowHeight&#125;</span><br><span class="line">				height=&#123;columnsRealHeight &gt; columnsBoxHeight ? columnsBoxHeight : columnsRealHeight + scrollbarSize&#125;</span><br><span class="line">				onScroll=&#123;(&#123; scrollLeft &#125;) =&gt; &#123;</span><br><span class="line">					onScroll(&#123; scrollLeft &#125;)</span><br><span class="line">				&#125;&#125;</span><br><span class="line">				style=&#123;&#123;</span><br><span class="line">					height: &quot;auto&quot;,</span><br><span class="line">					minHeight: minHeight,</span><br><span class="line">					maxHeight: maxHeight,</span><br><span class="line">				&#125;&#125;</span><br><span class="line">			&gt;</span><br><span class="line">				&#123;(&#123; columnIndex, rowIndex, style &#125;) =&gt; &#123;</span><br><span class="line">					const value = (rawData[rowIndex] as any)[mergedColumns[columnIndex].dataIndex]</span><br><span class="line">					const columnWidth = columns[columnIndex].width</span><br><span class="line">					const containChars = Math.floor((columnWidth! - TConfig.AntdTdPadding - TConfig.ThtdBorder) / TConfig.AntdFontSize) * 2</span><br><span class="line">					return (</span><br><span class="line">						&lt;div className=&#123;Style.virtualTableCell&#125; style=&#123;style&#125;&gt;</span><br><span class="line">							&#123;columnWidth &amp;&amp; strLen(String(value)) &gt; containChars ? &lt;Tooltip title=&#123;value&#125;&gt;&#123;value&#125;&lt;/Tooltip&gt; : value&#125;</span><br><span class="line">						&lt;/div&gt;</span><br><span class="line">					)</span><br><span class="line">				&#125;&#125;</span><br><span class="line">			&lt;/Grid&gt;</span><br><span class="line">		) : undefined</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	useEffect(() =&gt; resetVirtualGrid, [tableWidth, columns])</span><br><span class="line"></span><br><span class="line">	const shouldHeaderScroll = data.length == 0</span><br><span class="line"></span><br><span class="line">	return (</span><br><span class="line">		&lt;ResizeObserver</span><br><span class="line">			onResize=&#123;(&#123; width, height &#125;) =&gt; &#123;</span><br><span class="line">				setTableWidth(width)</span><br><span class="line">			&#125;&#125;</span><br><span class="line">		&gt;</span><br><span class="line">			&lt;Table</span><br><span class="line">				&#123;...props&#125;</span><br><span class="line">				scroll=&#123;&#123; y: getScrollY(c_size.y, 0), x: undefined &#125;&#125;</span><br><span class="line">				className=&#123;[Style.virtualTable, shouldHeaderScroll ? Style.antdHdScroll : &quot;&quot;].join(&quot; &quot;)&#125;</span><br><span class="line">				columns=&#123;mergedColumns&#125;</span><br><span class="line">				dataSource=&#123;data&#125;</span><br><span class="line">				style=&#123;&#123; width: mergedColumns.length != 0 &amp;&amp; mergedColumns[0].width ? mergedColumns.length * mergedColumns[0].width + 1 : &quot;auto&quot; &#125;&#125;</span><br><span class="line">				bordered</span><br><span class="line">				pagination=&#123;false&#125;</span><br><span class="line">				components=&#123;&#123;</span><br><span class="line">					body: renderVirtualList,</span><br><span class="line">				&#125;&#125;</span><br><span class="line">			/&gt;</span><br><span class="line">		&lt;/ResizeObserver&gt;</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default VirtualTable</span><br></pre></td></tr></table></figure>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.virtualTable</span> &#123;</span><br><span class="line">	<span class="attribute">position</span>: absolute;</span><br><span class="line">	<span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">	<span class="selector-class">.virtualTableCell</span> &#123;</span><br><span class="line">		<span class="attribute">box-sizing</span>: border-box;</span><br><span class="line"></span><br><span class="line">		<span class="attribute">overflow</span>: hidden;</span><br><span class="line">		<span class="attribute">text-overflow</span>: ellipsis;</span><br><span class="line">		<span class="attribute">white-space</span>: nowrap;</span><br><span class="line"></span><br><span class="line">		@<span class="keyword">include</span> border_color(<span class="string">"color_divide"</span>, 1px, right);</span><br><span class="line">		@<span class="keyword">include</span> border_color(<span class="string">"color_divide"</span>, 1px, bottom);</span><br><span class="line">		@<span class="keyword">include</span> text_color(<span class="string">"color_font"</span>);</span><br><span class="line">		<span class="attribute">padding</span>: <span class="number">5px</span> <span class="number">10px</span>;</span><br><span class="line">		<span class="attribute">line-height</span>: <span class="number">30px</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.antdHdScroll</span> &#123;</span><br><span class="line">	:global &#123;</span><br><span class="line">		.ant-table-header &#123;</span><br><span class="line">			overflow: auto <span class="meta">!important</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="使用VirtualTable组件"><a href="#使用VirtualTable组件" class="headerlink" title="使用VirtualTable组件"></a>使用VirtualTable组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">import ResizeObserver from &quot;rc-resize-observer&quot;</span><br><span class="line"></span><br><span class="line">export const Tables: FC&lt;IProps&gt; = () =&gt; &#123;</span><br><span class="line"></span><br><span class="line">const [panelHeight, setPanelHeight] = useState(0)</span><br><span class="line">const formatData = (</span><br><span class="line">	fields: Field[],</span><br><span class="line">	data: (ReactText | null)[][]</span><br><span class="line">): &#123;</span><br><span class="line">	[key: string]: ReactText</span><br><span class="line">&#125;[] =&gt; &#123;</span><br><span class="line">	return data</span><br><span class="line">		.map((rowValues, i) =&gt; &#123;</span><br><span class="line">			let obj: &#123;</span><br><span class="line">				[key: string]: any</span><br><span class="line">			&#125; = &#123;&#125;</span><br><span class="line">			fields.map((field, j) =&gt; &#123;</span><br><span class="line">				let key = getKey(field)</span><br><span class="line">				obj[key] == undefined &amp;&amp;</span><br><span class="line">					Object.defineProperty(obj, getKey(field), &#123;</span><br><span class="line">						value: formatValue(rowValues[j], &#123;</span><br><span class="line">							type: field.value_type,</span><br><span class="line">						&#125;),</span><br><span class="line">						enumerable: true,</span><br><span class="line">					&#125;)</span><br><span class="line">			&#125;)</span><br><span class="line">			return obj</span><br><span class="line">		&#125;)</span><br><span class="line">		.filter((rowObj) =&gt; Object.keys(rowObj).length !== 0)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">return(</span><br><span class="line">  &lt;ResizeObserver</span><br><span class="line">          onResize=&#123;(&#123; height &#125;) =&gt; &#123;</span><br><span class="line">            let headerHeight = headerRef.current ? headerRef.current.clientHeight : 0</span><br><span class="line">            setPanelHeight(height - headerHeight - (isFullScreen ? FULLSCREEN_PADDING * 2 : 0))</span><br><span class="line">          &#125;&#125;</span><br><span class="line">        &gt;</span><br><span class="line">    &lt;div className=&#123;Style.panelBody&#125;&gt;</span><br><span class="line">      &#123;data &amp;&amp; data.fields &amp;&amp; data.fields.length ? (</span><br><span class="line">        &lt;Spin spinning=&#123;spinning&#125;&gt;</span><br><span class="line">          &lt;VirtualTable columns=&#123;formatColumns(data.fields)&#125; data=&#123;formatData(data.fields, data.data)&#125; c_size=&#123;&#123; y: panelHeight, x: undefined &#125;&#125; isSort=&#123;true&#125;/&gt;</span><br><span class="line">        &lt;/Spin&gt;</span><br><span class="line">      ) : (</span><br><span class="line">        &lt;Empty image=&#123;Empty.PRESENTED_IMAGE_SIMPLE&#125; /&gt;</span><br><span class="line">      )&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &lt;/ResizeObserver&gt;</span><br><span class="line">)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p><a href="https://ant.design/components/table-cn/#components-table-demo-virtual-list" target="_blank" rel="noopener">antd虚拟滚动</a></p>
+<p><a href="https://www.zhihu.com/column/antdesign" target="_blank" rel="noopener">知乎AntD话题</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/102037418" target="_blank" rel="noopener">Ant Design 4.0 的一些杂事儿 - Table 篇</a></p>
+<p><a href="https://github.com/ctq123/ant-virtual-table" target="_blank" rel="noopener">github 开源ant-virtual-table，没看源码，应该和上述实现差不多</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>感谢你的打赏哦！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="link 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="link 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React/" rel="tag"># React</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/04/01/ESLint相关/" rel="next" title="ESLint相关 +  prettier">
+                <i class="fa fa-chevron-left"></i> ESLint相关 +  prettier
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">link</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/kitions" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:nsplknsplk@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://plus.google.com/nsplknsplk" target="_blank" title="Google">
+                      
+                        <i class="fa fa-fw fa-google"></i>Google</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/your-user-name" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/your-user-name" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-zhihu"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ANTD-table-虚拟滚动"><span class="nav-number">1.</span> <span class="nav-text">ANTD table 虚拟滚动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.0.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜索方法"><span class="nav-number">1.0.2.</span> <span class="nav-text">搜索方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序方法"><span class="nav-number">1.0.3.</span> <span class="nav-text">排序方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坑点"><span class="nav-number">1.0.4.</span> <span class="nav-text">坑点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整的VirtualTable组件"><span class="nav-number">1.0.5.</span> <span class="nav-text">完整的VirtualTable组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用VirtualTable组件"><span class="nav-number">1.0.6.</span> <span class="nav-text">使用VirtualTable组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链接"><span class="nav-number">1.0.7.</span> <span class="nav-text">链接</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">link</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'ohCdgFTxBCqGAWc738RfOoS4-gzGzoHsz',
+        appKey: 'ePCpct3dlRSGr3dY2Og1UQSY',
+        placeholder: '来来来  输入你的评论吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ohCdgFTxBCqGAWc738RfOoS4-gzGzoHsz", "ePCpct3dlRSGr3dY2Og1UQSY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
